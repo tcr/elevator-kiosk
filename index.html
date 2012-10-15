@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+
+<html>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<style>
+html, body { margin: 0; padding: 0;
+	font-size: 20px; font-family: Helvetica Neue, Helvativa, Arial, sans-serif; }
+body { width: 800px; }
+
+.panel { border: 5px solid green; overflow: auto; }
+.section { outline: 1px solid red; overflow: auto; }
+
+/* header */
+#header { position: relative; min-height: 3em; }
+#header-time { position: absolute; right: 10px; top: 0; }
+
+/* navigation */
+#nav button { float: left; }
+
+/* panel companies */
+#companies, #poi { -webkit-columns: 300px 2; padding: 10px 10px 0 10px;}
+#companies p, #poi p { border: 1px solid black; margin: 0 0 10px 0; padding: 5px 10px; cursor: pointer; } 
+#companies p:hover, #poi p:hover { background: yellow; }
+#find-meeting { width: 90%; margin: 0 auto; display: block; text-align: center; padding: 15px; font-size: 24px;  }
+
+/* panel search people */
+#listings { outline: 1px solid red; }
+#alphabet b { display: block; cursor: pointer; border: 1px solid #333; width: 2em; height: 1em; margin-top: -1px; }
+#alphabet b:hover { background: #fed; }
+#alphabet { float: right; }
+#items p { border-bottom: 1px solid #999; padding: 10px 15px; cursor: pointer; }
+#items p:hover { background: yellow; }
+
+/* panel person*/
+#person-img { float: left; margin: 15px; }
+#elevator-pullout { display: block; clear: left; border: 1px solid black; padding: 15px; }
+</style>
+<script>
+
+/* panels */
+
+var backqueue = [];
+
+function showPanel (id, header) {
+	backqueue.push(arguments);
+
+	$('.panel').hide();
+	$('#' + id).show();
+	
+	$('h2').text(header);
+	$('#back-button').toggle(id != 'panel-find');
+}
+
+$(function () {
+	$('#back-button')[0].onclick = function () {
+		backqueue.pop();
+		var last = backqueue.pop();
+		showPanel.apply(null, last);
+	};
+	showCompanyPanel();
+})
+
+/* company selection */
+
+var companies = [
+	{name: 'Apple'},
+	{name: 'Adobe'},
+	{name: 'AMD'},
+	{name: 'Disney Interactive'},
+	{name: 'Dropbox'},
+	{name: 'IDEO'},
+	{name: 'Instagram'},
+	{name: 'JC Penny'},
+	{name: 'Jitter'},
+	{name: 'Kindle Books'},
+	{name: 'Luminair'},
+	{name: 'Mass Challenge'},
+	{name: 'Quora'},
+	{name: 'Twitter Labs'},
+	{name: 'Xerox'}
+];
+
+companies.forEach(function (company) {
+	company.domain = company.name.replace(/\s+/, '').toLowerCase() + '.com'
+})
+
+$(function () {
+	companies.forEach(function (company) {
+		$('<p></p>').text(company.name).appendTo('#companies').on('click', function () {
+			showPeoplePanel(company);
+		})
+	})
+});
+
+function showCompanyPanel () {
+	showPanel('panel-find', 'Find someone in...');
+}
+
+/* people filtering */
+
+var people = names = ["Aaron Ruppe", "Abe Welliver", "Abram Rondeau", "Addie Maricle", "Adelina Steinfeldt", "Adell Tacker", "Afton Yarborough", "Aisha Aquino", "Akiko Hiltz", "Alanna Mcconico", "Albertina Weymouth", "Alecia Yopp", "Aleen Boyce", "Alejandrina Walborn", "Alfonzo Bigley", "Alica Obrien", "Allan Oglesby", "Alonso Carini", "Alton Lancon", "Alton Stalling", "America Wicker", "Amira Sobolik", "Andres Guzman", "Andrew Helms", "Angla Hug", "Annalee Richins", "Annelle Koonce", "Anton Herder", "Antonette Remmers", "Arnita Mccarty", "Ashley Merida", "Athena Dahmen", "Aubrey Sun", "Audie Alfieri", "Audry Hirata", "Aurea Corl", "Ayesha Mcwhorter", "Barry Coger", "Barton Fegan", "Becky Francisco", "Bennie Mello", "Bertie Marion", "Billye Sias", "Bob File", "Bob Normandin", "Bobbi Saeger", "Bobbye Swarey", "Bradford Lainez", "Bradly Vanburen", "Brianna Eargle", "Brice Gulick", "Bridget Mulkey", "Brigida Foraker", "Buster Christon", "Byron Corral", "Carl Balboa", "Carlota Steinbeck", "Carolin Sokol", "Chad Balmer", "Chanel Hawke", "Chang Lanasa", "Charles Gotto", "Chelsie Heron", "Chester Roark", "Cheyenne Morel", "Christoper Rhem", "Claudine Hughey", "Clemente Gosney", "Clementine Stogsdill", "Clifford Mcculley", "Clint Morlan", "Cole Tietz", "Coleman Marcin", "Collen Dewitt", "Conrad Brezinski", "Coralie Scianna", "Cordie Peter", "Corey Sprau", "Corine Mckeller", "Corrie Mcbroom", "Corrinne Reda", "Criselda Duong", "Dale Chumbley", "Danette Ranney", "Daron Barbagallo", "Dean Gallagher", "Deangelo Penson", "Debbi Patino", "Delfina Twining", "Delma Hackett", "Demetrius Loughlin", "Deon Keffer", "Desmond Forshee", "Dewey Messmer", "Diane Hagen", "Dodie Mendieta", "Donn Tipler", "Donte Provenza", "Doreatha Conte", "Dorethea Everton", "Dorthey Umberger", "Dreama Halfacre", "Dwight Lock", "Dylan Glasser", "Eddy Conry", "Edmond Steuck", "Edmundo Sturdevant", "Efren Pratte", "Eileen Bacher", "Ellis Lovings", "Eloise Renaud", "Elroy Amundsen", "Emanuel Digby", "Emerson Lavin", "Emmaline Fredericksen", "Emmett Burchett", "Eric Hoop", "Eric Perl", "Ernie Gartner", "Esmeralda Spitler", "Evelia Ransom", "Everett Cortright", "Evon Furtado", "Ezekiel Whittle", "Fausto Escalona", "Ferdinand Wicks", "Ferdinand Widner", "Fermin Mickelsen", "Fidela Bellows", "Filiberto Tony", "Florentino Stewart", "Francesco Behling", "Francie Strobl", "Freddie Ham", "Frieda Crossman", "Frieda Hartman", "Fumiko Cooks", "Gabriel Isbell", "Garrett Radel", "Garth Agosta", "Gary Petrus", "Gavin Biddy", "Gayle Forsberg", "Gene Remick", "Geraldo Toussaint", "Gerda Mauck", "Gilda Sapien", "Gino Stockdale", "Giuseppe Amend", "Glen Defazio", "Glory Minogue", "Greg Murdock", "Hannah Pratt", "Hans Hartl", "Harley Flavors", "Hedwig Kaylor", "Heriberto Law", "Herta Fanning", "Honey Chmiel", "Hong Krings", "Horace Tupper", "Hosea Gaddis", "Houston Mogan", "Howard Hemond", "Ian Dockins", "Ilona Kettner", "Ilona Mcswain", "India Frasure", "Inge Villano", "Irena Mcginley", "Irish Tijerina", "Isreal Herford", "Issac Borda", "Jack Pagano", "Jade Crandle", "Jaime Hadsell", "Jalisa Avendano", "Janina Sumlin", "Jared Groner", "Jarrett Beckerman", "Jarrod Hardaway", "Jarvis Hiles", "Jason Bieniek", "Jason Laiche", "Jason Tomaselli", "Jayson Hollingsworth", "Jeanine Curiel", "Jeff Mandez", "Jefferson Cerrone", "Jeffery Davey", "Jerald Marcotte", "Jere Mccleery", "Jermaine Dilbeck", "Jermaine Vasser", "Jerold Irey", "Jerry Herdon", "Jesusa Dyck", "Jona Talbert", "Josh Donelan", "Juan Croteau", "Julius Trost", "Karen Liang", "Karima Viramontes", "Karly Haffner", "Kati Poeppelman", "Kiana Tuff", "Kimberly Ong", "Kirby Ellerbee", "Kirby Sanderson", "Kirk Mailman", "Korey Westberg", "Kristopher Blanton", "Kurt Severance", "Kyla Mor", "Lakesha Sitsler", "Lang Rosenberry", "Lanny Gardener", "Larisa Noon", "Latoyia Oxley", "Laura Gutter", "Lauralee Karl", "Lauretta Focht", "Lea Peredo", "Leatrice Waag", "Leland Saladin", "Leona Rosell", "Lera Sipos", "Lewis Hymel", "Lilia Eakes", "Lionel Harrison", "Lloyd Rossell", "Lon Wimbush", "Loraine Bona", "Loreen Paulding", "Lorraine Dejarnette", "Louie Petrarca", "Loyd Simoneaux", "Luisa Kitchell", "Lulu Outten", "Lurlene Tam", "Lyndsay Plantz", "Madalene Augustus", "Malcolm Gurrola", "Malik Kirschner", "Malik Woodrow", "Man Frederick", "Many Beverlin", "Marco Hosier", "Margarete Stull", "Margot Buckles", "Maria Southwell", "Maria Spataro", "Marquis Miro", "Marybelle Trombetta", "Maxie Kirkman", "Maya Junious", "Meaghan Deaner", "Michale Mcglinchey", "Michell Leader", "Michelle Laughter", "Milda Batton", "Moshe Willmore", "Murray Witherite", "Myles Cutsforth", "Na Hentz", "Napoleon Overcash", "Narcisa Crossno", "Natashia Covington", "Nathanial Melody", "Nathanial Pauline", "Nathaniel Smeltzer", "Ned Skalski", "Nena Bardsley", "Nenita Mccaw", "Nevada Soper", "Nicki Thibodaux", "Nikole Guinyard", "Nolan Adkison", "Numbers Kopecky", "Octavia Connelly", "Odell Hirano", "Olimpia Tozier", "Orlando Newlon", "Otis Feldt", "Otto Brazell", "Owen Schuller", "Palmer Schwandt", "Pam Basilio", "Pam Gabler", "Pamela Zych", "Patria Zalenski", "Patti Profit", "Paulina Quarles", "Percy Lincoln", "Perry Im", "Philip Leboeuf", "Porter Utley", "Preston Morones", "Quentin Feucht", "Racquel Klapper", "Rafael Daluz", "Rafael Flaugher", "Ramiro Angeles", "Randy Lao", "Ranee Hsieh", "Rashad Rowlands", "Rashida Kabel", "Rea Kemmer", "Reagan Martell", "Reginia Theus", "Rey Straight", "Rickey Kerley", "Ricki Rohman", "Ricki Steere", "Ricky Fowkes", "Rico Lofton", "Rocco Jessee", "Rocio Wardle", "Rodrick Evanoff", "Rogelio Maule", "Rolland Macky", "Rosalyn Melugin", "Rosaria Coen", "Rosaria Sidhu", "Roscoe Ogg", "Roxy Newnam", "Rufus Cardinale", "Russell Huckaby", "Samuel Linck", "Sandy Maurer", "Santo Escalera", "Sarai Cameron", "Scot Orloff", "Scott Aguila", "Sean Pardo", "Season Clairmont", "Shad Sievert", "Shakia Lukasiewicz", "Shakia Steeves", "Shala Loy", "Shanae Machen", "Sharen Remley", "Shay Brackins", "Shelby Hamann", "Sherley Mathes", "Sherrell Janelle", "Simon Veal", "Somer Withrow", "Sondra Blackmer", "Soo Faber", "Spencer Ratcliff", "Stanton Scheidler", "Stephan Rigsby", "Sunni Alongi", "Susan Stpierre", "Tabatha Zale", "Tammera Stokely", "Tasia Kreamer", "Taylor Marmolejo", "Teodoro Marrinan", "Terrell Corbo", "Terrie Strey", "Terry Arviso", "Tessie Bills", "Theda Arnone", "Theresa Fett", "Thersa Pilling", "Tien Stripling", "Timmy Yeh", "Tod Sweatman", "Tommy Ahlgren", "Toney Rinke", "Tory Coomes", "Trevor Mau", "Tristan Dower", "Vada Sessoms", "Val Bozell", "Velia Stansberry", "Victor Pou", "Victor Scheetz", "Vikki Orozco", "Vincenzo Gertz", "Walker Lepine", "Ward Bardwell", "Ward Gingerich", "Warner Kenney", "Wayne Raap", "Wesley Prentiss", "Weston Champ", "Will Monte", "Woodrow Hsieh", "Wynell Kamm", "Xenia Shriner", "Xiomara Goodwill", "Yolonda Schiel", "Young Kasel", "Zora Schoch"];
+
+people = people.map(function (name, i) {
+	return {
+		name: name,
+		phone: Math.floor(Math.random()*10000000000),
+		email: name.toLowerCase().replace(/\s+/, '.').replace(/[^a-zA-Z\.]/, '') + '@' + companies[i % companies.length].domain,
+		company: companies[i % companies.length].name
+	};
+})
+
+function showPeoplePanel (company) {
+	showPanel('panel-search', 'People in ' + company.name);
+	$('#items').html('');
+	people.filter(function (person) {
+		return !company || person.company == company.name;
+	}).forEach(function (person) {
+		$('<p></p>').text(person.name).appendTo('#items').on('click', function () {
+			showPersonPanel(person);
+		})
+	})
+}
+
+$(function () {
+	// generate alphabet
+	[].forEach.call("abcdefghijklmnopqrstuvwxyz".toUpperCase(), function (letter) {
+		$('<b>' + letter + '</b>').appendTo('#alphabet').on('click', function () {
+			resetAlphabetFilter();
+			$('#items p').each(function (i, p) {
+				$(p).toggle($(p).text().toLowerCase().charAt(0) == letter.toLowerCase())
+			});
+			$(this).css('background', 'yellow');
+		})
+	});
+
+	function resetAlphabetFilter() {
+		$('#alphabet b').css('background', '');
+	}
+
+	function textFilter() {
+		resetAlphabetFilter();
+		var s = $('#search').val();
+		$('#items p').each(function (i, p) {
+			if (!s) {
+				$(p).show();
+			} else {
+				$(p).toggle($(p).text().toLowerCase().indexOf(s) != -1)
+			}
+		})
+	}
+
+	$('#search').on('keydown', function () {
+		setTimeout(textFilter);
+	}).on('click', textFilter);
+});
+
+/* people */
+
+function showPersonPanel (person) {
+	showPanel('panel-person', person.name);
+	$('#person-name').text(person.name);
+	$('#person-info').text(person.company + '\n' + person.email + '\n' + person.phone)
+}
+
+</script>
+<body>
+
+	<div id="header" class="section">
+		<h1>Rogers Building<br><small>253 Rogers Street</h1>
+		<p id="header-time">9:15am<br>Tuesday<br>10/9</p>
+	</div>
+
+	<div id="nav" class="section">
+		<button id="back-button">BACK</button>
+		<h2>Michael Dolphin</h2>
+	</div>
+
+	<div id="panels" class="section">
+
+		<div id="panel-find" class="panel">
+			<div id="companies">
+			</div>
+
+			<button id="find-meeting">Find a meeting room</button>
+
+			<div id="poi">
+				<p>Cafeteria</p>
+				<p>Gym</p>
+				<p>Auditorium</p>
+				<p>Garage</p>
+			</div>
+		</div>
+
+		<div id="panel-search" class="panel">
+			<input type="text" id="search">
+			<div id="listings">
+				<div id="alphabet"></div>
+				<div id="items">
+				</div>
+			</div>
+		</div>
+
+		<div id="panel-person" class="panel">
+			<img id="person-img" src="http://placekitten.com/300/300">
+			<address>
+				<p id="person-name">Michael Dolphin</p>
+				<pre id="person-info">
+					Disney Interactive<br>
+					michael.d@disney-interactive.com<br>
+					(781) 393-5555
+				</pre>
+			</address>
+
+			<div id="elevatorinfo">
+				<div id="elevator-pullout">
+					(9)
+				</div>
+				<div id="panel-img">
+					<img src="http://www.bestctoffices.com/images/Units%2034%20detail.gif" width="700">
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
