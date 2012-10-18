@@ -7,7 +7,9 @@ html, body { margin: 0; padding: 0;
 	font-size: 20px; font-family: Helvetica Neue, Helvativa, Arial, sans-serif; }
 html, body { width: 800px; height: 100%; height: 100%; position: relative; }
 
-.panel { border: 5px solid green; overflow: auto; max-height: 600px; }
+h1 { margin: 0; }
+
+.panel { border: 5px solid green; overflow: auto; max-height: 675px; }
 .section { outline: 1px solid red; overflow: auto; }
 
 /* header */
@@ -25,15 +27,16 @@ html, body { width: 800px; height: 100%; height: 100%; position: relative; }
 
 /* panel search people */
 #listings { outline: 1px solid red; }
-#alphabet b { display: block; cursor: pointer; border: 1px solid #333; width: 2em; height: 1em; margin-top: -1px; background: white; padding: 5px 10px; }
+#alphabet b { display: block; cursor: pointer; border: 1px solid #333; width: 2em; height: 1em; margin-top: -1px; background: white; padding: 3px 10px; }
 #alphabet b:hover { background: #fed; }
 #alphabet { float: right; position: absolute; right: 0; }
-#items p { border-bottom: 1px solid #999; padding: 10px 15px; cursor: pointer; }
+#items p { border-bottom: 1px solid #999; padding: 10px 15px; cursor: pointer; margin: 0; }
 #items p:hover { background: yellow; }
 
 /* panel person*/
 #person-img { float: left; margin: 15px; }
-#elevator-pullout { display: block; clear: left; border: 1px solid black; padding: 15px; }
+#elevator-pullout { display: block; clear: left; border: 1px solid black; padding: 15px; font-size: 24px; }
+#elevator-pullout span { display: inline-block; text-align: center; height: 40px; width: 40px; border-radius: 20px; background: #f99; padding-top: 6px; box-sizing: border-box;}
 </style>
 <script>
 
@@ -160,6 +163,7 @@ function showPersonPanel (person) {
 	showPanel('panel-person', person.name);
 	$('#person-name').text(person.name);
 	$('#person-info').text(person.company + '\n' + person.email + '\n' + person.phone)
+	$('#person-img').attr('src', 'http://placekitten.com/' + Math.round(200 + Math.random() * 100) + '/' + Math.round(200 + Math.random() * 10));
 }
 
 $(function () {
@@ -214,7 +218,7 @@ $(function () {
 		</div>
 
 		<div id="panel-person" class="panel">
-			<img id="person-img" src="http://placekitten.com/300/300">
+			<img id="person-img" src="http://placekitten.com/200/200">
 			<address>
 				<p id="person-name">Michael Dolphin</p>
 				<pre id="person-info">
@@ -226,7 +230,7 @@ $(function () {
 
 			<div id="elevatorinfo">
 				<div id="elevator-pullout">
-					(9)
+					Floor <span>9</span> &nbsp;&nbsp;&nbsp; Elevator <span>A</span> &nbsp;&nbsp;&nbsp; Go to East Wing.
 				</div>
 				<div id="panel-img">
 					<img src="http://www.bestctoffices.com/images/Units%2034%20detail.gif" width="700">
