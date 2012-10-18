@@ -5,9 +5,9 @@
 <style>
 html, body { margin: 0; padding: 0;
 	font-size: 20px; font-family: Helvetica Neue, Helvativa, Arial, sans-serif; }
-body { width: 800px; }
+html, body { width: 800px; height: 100%; height: 100%; position: relative; }
 
-.panel { border: 5px solid green; overflow: auto; }
+.panel { border: 5px solid green; overflow: auto; max-height: 600px; }
 .section { outline: 1px solid red; overflow: auto; }
 
 /* header */
@@ -25,9 +25,9 @@ body { width: 800px; }
 
 /* panel search people */
 #listings { outline: 1px solid red; }
-#alphabet b { display: block; cursor: pointer; border: 1px solid #333; width: 2em; height: 1em; margin-top: -1px; }
+#alphabet b { display: block; cursor: pointer; border: 1px solid #333; width: 2em; height: 1em; margin-top: -1px; background: white; padding: 5px 10px; }
 #alphabet b:hover { background: #fed; }
-#alphabet { float: right; }
+#alphabet { float: right; position: absolute; right: 0; }
 #items p { border-bottom: 1px solid #999; padding: 10px 15px; cursor: pointer; }
 #items p:hover { background: yellow; }
 
@@ -162,10 +162,23 @@ function showPersonPanel (person) {
 	$('#person-info').text(person.company + '\n' + person.email + '\n' + person.phone)
 }
 
+$(function () {
+	$('#header').on('click', function () {
+		var elem = $('body')[0];
+		if (elem.requestFullScreen) {
+		  elem.requestFullScreen();
+		} else if (elem.mozRequestFullScreen) {
+		  elem.mozRequestFullScreen();
+		} else if (elem.webkitRequestFullScreen) {
+		  elem.webkitRequestFullScreen();
+		}
+	});
+})
+
 </script>
 <body>
 
-	<div id="header" class="section">
+	<div id="header" class="section" style="cursor: pointer">
 		<h1>Rogers Building<br><small>253 Rogers Street</h1>
 		<p id="header-time">9:15am<br>Tuesday<br>10/9</p>
 	</div>
