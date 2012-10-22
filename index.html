@@ -5,32 +5,35 @@
 <style>
 html, body { margin: 0; padding: 0;
 	font-size: 20px; font-family: Helvetica Neue, Helvativa, Arial, sans-serif; }
-html, body { width: 800px; height: 100%; height: 100%; position: relative; }
+html, body { width: 800px; height: 100%; height: 100%; position: relative; background: black; }
 
-h1 { margin: 0; }
+h1 { margin: 0; font-size: 30px; padding: 10px;  }
+h2 { margin: 15px 10px 0; }
+h3 { text-transform: uppercase; color: #666; margin: 15px 15px 0;}
 
-.panel { border: 5px solid green; overflow: auto; max-height: 675px; }
-.section { outline: 1px solid red; overflow: auto; }
+.panel { overflow: auto; max-height: 675px; background: #fff; padding: 10px 0;}
+.section { overflow: auto; background: white;  }
 
 /* header */
-#header { position: relative; min-height: 3em; }
+#header { position: relative; min-height: 3em; margin-bottom: 1px; font-family: Georgia; background: #aaa;}
 #header-time { position: absolute; right: 10px; top: 0; }
 
 /* navigation */
-#nav button { float: left; }
+#nav button { float: left; font-size: 19px; margin: 20px 30px 0 10px; }
+#nav #done-button { float: right; }
 
 /* panel companies */
 #companies, #poi { -webkit-columns: 300px 2; padding: 10px 10px 0 10px;}
-#companies p, #poi p { border: 1px solid black; margin: 0 0 10px 0; padding: 5px 10px; cursor: pointer; } 
+#companies p, #poi p { border: 2px outset #888; margin: 0 0 10px 0; padding: 5px 10px; cursor: pointer; background: #eee; border-radius: 3px; } 
 #companies p:hover, #poi p:hover { background: yellow; }
 #find-meeting { width: 90%; margin: 0 auto; display: block; text-align: center; padding: 15px; font-size: 24px;  }
+#search { font-size:; 24px; padding: 5px 0; width: 500px; margin-left: 20px; }
 
 /* panel search people */
-#listings { outline: 1px solid red; }
 #alphabet b { display: block; cursor: pointer; border: 1px solid #333; width: 2em; height: 1em; margin-top: -1px; background: white; padding: 3px 10px; }
 #alphabet b:hover { background: #fed; }
 #alphabet { float: right; position: absolute; right: 0; }
-#items p { border-bottom: 1px solid #999; padding: 10px 15px; cursor: pointer; margin: 0; }
+#items p { border-top: 1px solid #999; padding: 10px 15px; cursor: pointer; margin: 0; }
 #items p:hover { background: yellow; }
 
 /* panel person*/
@@ -60,6 +63,11 @@ $(function () {
 		var last = backqueue.pop();
 		showPanel.apply(null, last);
 	};
+	$('#done-button')[0].onclick = function () {
+		var args = backqueue[0];
+		backqueue = [];
+		showPanel.apply(null, args);
+	}
 	showCompanyPanel();
 })
 
@@ -96,7 +104,7 @@ $(function () {
 });
 
 function showCompanyPanel () {
-	showPanel('panel-find', 'Find someone in...');
+	showPanel('panel-find', 'Where are you headed?');
 }
 
 /* people filtering */
@@ -113,7 +121,7 @@ people = people.map(function (name, i) {
 })
 
 function showPeoplePanel (company) {
-	showPanel('panel-search', 'People in ' + company.name);
+	showPanel('panel-search', 'People who work at ' + company.name);
 	$('#items').html('');
 	people.filter(function (person) {
 		return !company || person.company == company.name;
@@ -122,6 +130,7 @@ function showPeoplePanel (company) {
 			showPersonPanel(person);
 		})
 	})
+	$('#search').focus();
 }
 
 $(function () {
@@ -161,9 +170,11 @@ $(function () {
 
 function showPersonPanel (person) {
 	showPanel('panel-person', person.name);
-	$('#person-name').text(person.name);
-	$('#person-info').text(person.company + '\n' + person.email + '\n' + person.phone)
-	$('#person-img').attr('src', 'http://placekitten.com/' + Math.round(200 + Math.random() * 100) + '/' + Math.round(200 + Math.random() * 10));
+	//$('#person-name').text(person.name);
+	$('#person-info').text('Employee at ' + person.company + '\n' + person.email + '\n' + person.phone)
+	$('#person-img')
+		.attr('src', 'http://placekitten.com/' + Math.round(200 + Math.random() * 10) + '/' + Math.round(150 + Math.random() * 10))
+		.css({width: 200 + 'px', height: 150 + 'px'})
 }
 
 $(function () {
@@ -188,18 +199,22 @@ $(function () {
 	</div>
 
 	<div id="nav" class="section">
-		<button id="back-button">BACK</button>
+		<button id="back-button">&larr; BACK</button>
+		<button id="done-button">I'm Finished</button>
 		<h2>Michael Dolphin</h2>
 	</div>
 
 	<div id="panels" class="section">
 
 		<div id="panel-find" class="panel">
+			<h3>Find a person</h2>
 			<div id="companies">
 			</div>
 
-			<button id="find-meeting">Find a meeting room</button>
+			<h3>Go to a meeting</h3>
+			<button id="find-meeting">Find a room &rarr;</button>
 
+			<h3>Points of interest</h3>
 			<div id="poi">
 				<p>Cafeteria</p>
 				<p>Gym</p>
@@ -220,7 +235,6 @@ $(function () {
 		<div id="panel-person" class="panel">
 			<img id="person-img" src="http://placekitten.com/200/200">
 			<address>
-				<p id="person-name">Michael Dolphin</p>
 				<pre id="person-info">
 					Disney Interactive<br>
 					michael.d@disney-interactive.com<br>
@@ -230,7 +244,7 @@ $(function () {
 
 			<div id="elevatorinfo">
 				<div id="elevator-pullout">
-					Floor <span>9</span> &nbsp;&nbsp;&nbsp; Elevator <span>A</span> &nbsp;&nbsp;&nbsp; Go to East Wing.
+					Please choose: Floor <span>9</span> &nbsp;&nbsp;&nbsp; (Elevator <span>A</span>) &nbsp;&nbsp;&nbsp;
 				</div>
 				<div id="panel-img">
 					<img src="http://www.bestctoffices.com/images/Units%2034%20detail.gif" width="700">
