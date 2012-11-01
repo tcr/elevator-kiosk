@@ -1,28 +1,35 @@
 <!DOCTYPE html>
 
 <html>
+<head>
+	<title>Building Navigator</title>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+
 <style>
 html, body { margin: 0; padding: 0;
-	font-size: 18px; font-family: Helvetica Neue, Helvativa, Arial, sans-serif; }
-html, body { width: 800px; height: 100%; height: 100%; position: relative; background: black; }
+	font-size: 18px; font-family: Helvetica Neue, Helvetica, Arial, sans-serif; }
+html, body { width: 800px; height: 100%; height: 100%; position: relative; background: black; color: white; }
 
 #floorbuttons { width: 280px; height: 100%; background: #655; position: fixed; top: 0; left: 0;}
 #floorbuttons table { height: 100%; width: 250px; border-spacing: 8px; }
 #floorbuttons td { border-radius: 10px; border: 5px outset #999; background: #ccc; font-family: Courier; text-align: center; }
 
-#kiosk { width: 800px; height: 100%; position: relative; margin-left: 300px; }
+#kiosk { width: 700px; height: 884px; position: relative; margin-left: 300px; background: #363636; padding: 8px 25px; }
 
-h1 { margin: 0; font-size: 30px; padding: 10px;  }
-h2 { margin: 15px 10px 0; }
-h3 { text-transform: uppercase; color: #666; margin: 15px 15px 0;}
+h1 { margin: 0; font-size: 30px; padding: 10px 0; font-weight: normal; line-height: 1.0;}
+h1 small { color: #8f8f8f; }
+h2 { margin: 15px 0 0; font-weight: normal; font-size: 20px; letter-spacing: 1px; }
+h3 { text-transform: uppercase; color: #666; margin: 15px 15px 0; font-weight: normal; }
 
-.panel { overflow: auto; max-height: 675px; background: #fff; padding: 10px 0;}
-.section { overflow: auto; background: white;  }
+.panel { overflow: auto; max-height: 675px; }
+.section { overflow: auto; }
 
 /* header */
-#header { position: relative; min-height: 3em; margin-bottom: 1px; font-family: Georgia; background: #aaa;}
-#header-time { position: absolute; right: 10px; top: 0; }
+#header { position: relative; min-height: 3em; padding: 10px 0; }
+#header hr { border: none; border-top: 1px solid #8f8f8f; opacity: 0.6; }
+#header-time { position: absolute; right: 10px; top: 5px; text-align: right; color: #8f8f8f; vertical-align: top; }
+#header-time span { color: #fff; vertical-align: middle; font-size: 1.05em; }
+#header-time sup { text-transform: uppercase; vertical-align: middle; font-size: 0.6em; padding: 0 0 0 5px;}
 
 /* navigation */
 #nav button { float: left; font-size: 19px; margin: 20px 30px 0 10px; }
@@ -30,7 +37,9 @@ h3 { text-transform: uppercase; color: #666; margin: 15px 15px 0;}
 
 /* panel companies */
 #companies, #poi { -webkit-columns: 300px 2; padding: 10px 10px 0 10px;}
-#companies p, #poi p { border: 2px outset #888; margin: 0 0 10px 0; padding: 5px 10px; cursor: pointer; background: #eee; border-radius: 3px; } 
+#poi p { margin: 0; text-align: center; }
+#poi img { }
+#companies p { border: 2px outset #888; margin: 0 0 10px 0; padding: 5px 10px; cursor: pointer; background: #eee; border-radius: 3px; } 
 #companies p:hover, #poi p:hover { background: yellow; }
 #find-meeting { width: 90%; margin: 0 auto; display: block; text-align: center; padding: 15px; font-size: 24px;  }
 #search { font-size:; 24px; padding: 5px 0; width: 500px; margin-left: 20px; }
@@ -76,12 +85,14 @@ $(function () {
 		var last = backqueue.pop();
 		showPanel.apply(null, last);
 	};
+	/*
 	$('#done-button')[0].onclick = function () {
 		var args = backqueue[0];
 		backqueue = [];
 		showPanel.apply(null, args);
 	}
-	showCompanyPanel();
+	*/
+	showLookingPanel();
 })
 
 $(function () {
@@ -107,9 +118,16 @@ $(function () {
 });
 
 
+/**
+ * What are you looking for?
+ */
+
+function showLookingPanel () {
+	showPanel('panel-find', 'What are you looking for?');
+}
 
 /**
- * Where are you headed?
+ * Companies
  */
 
 var companies = [
@@ -143,7 +161,7 @@ $(function () {
 });
 
 function showCompanyPanel () {
-	showPanel('panel-find', 'Where are you headed?');
+	showPanel('panel-find', 'What are you looking for?');
 }
 
 
@@ -247,32 +265,36 @@ function showPersonPanel (person) {
 
 	<div id="kiosk">
 		<div id="header" class="section" style="cursor: pointer">
-			<h1>Rogers Building<br><small>253 Rogers Street</small></h1>
-			<p id="header-time">9:15am<br>Tuesday<br>10/9</p>
+			<h1>Rogers Building<br><small>293 Rogers Street</small></h1>
+			<p id="header-time">10/29/12<br><span>9:15</span><sup>am</sup></p>
+			<hr>
 		</div>
 
 		<div id="nav" class="section">
 			<button id="back-button">&larr; BACK</button>
-			<button id="done-button">I'm Finished</button>
+			<!--<button id="done-button">I'm Finished</button>-->
 			<h2>Michael Dolphin</h2>
 		</div>
 
 		<div id="panels" class="section">
 
 			<div id="panel-find" class="panel">
-				<h3>Find a person</h2>
-				<div id="companies">
-				</div>
+				<!--<h3>Find a person</h2>-->
+				<div id="button-findaperson"><img src="findaperson.png" width="350"></div>
+				<div id="button-findameeting"><img src="findameeting.png" width="350"></div>
 
-				<h3>Go to a meeting</h3>
-				<button id="find-meeting">Find a room &rarr;</button>
-
-				<h3>Points of interest</h3>
+				<!--<h3>Points of interest</h3>-->
 				<div id="poi">
-					<p>Cafeteria</p>
-					<p>Gym</p>
-					<p>Auditorium</p>
-					<p>Garage</p>
+					<p><img alt="Cafeteria" src="poi-cafeteria.png" width="250"></p>
+					<p><img alt="Auditorium" src="poi-auditorium.png" width="250"></p>
+					<p><img alt="Gym" src="poi-gym.png" width="250"></p>
+					<p><img alt="Garage" src="poi-garage.png" width="250"></p>
+				</div>
+			</div>
+
+
+			<div id="panel-companies" class="panel">
+				<div id="companies">
 				</div>
 			</div>
 
