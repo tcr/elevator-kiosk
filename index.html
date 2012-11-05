@@ -3,7 +3,7 @@
 <html>
 <head>
 	<title>Building Navigator</title>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script src="jquery.min.js"></script>
 
 <style>
 html, body { margin: 0; padding: 0;
@@ -21,7 +21,7 @@ h1 small { color: #8f8f8f; }
 h2 { margin: 15px 0 0; font-weight: normal; font-size: 20px; letter-spacing: 1px; }
 h3 { text-transform: uppercase; color: #666; margin: 15px 15px 0; font-weight: normal; }
 
-.panel { overflow: auto; max-height: 675px; }
+.panel { overflow: auto; height: 675px; position: relative; }
 .section { overflow: auto; }
 
 /* header */
@@ -35,12 +35,28 @@ h3 { text-transform: uppercase; color: #666; margin: 15px 15px 0; font-weight: n
 #nav button { float: left; font-size: 19px; margin: 20px 30px 0 10px; }
 #nav #done-button { float: right; }
 
-/* panel companies */
-#companies, #poi { -webkit-columns: 300px 2; padding: 10px 10px 0 10px;}
+/* panel find */
+.largebutton { text-align: center; margin: 15px 0; }
+#sideinfo { -webkit-transition: width .5s; width: 700px; }
+#sideinfo-desc { width: 335px; }
+#sideinfo-desc, #companies, .mode-person #poi { height: 0; overflow: hidden;  }
+.mode-person #sideinfo-desc, .mode-person #companies { opacity: 1.0; overflow: visible; height: auto; }
+.mode-person #companies { height: 100%; overflow: auto; }
+.mode-person #sideinfo { width: 335px; position: absolute; top: 0; left: 0; }
+
+#button-findaperson img { -webkit-transition: background-image 1s; }
+.mode-person #button-findaperson { background: url(findapersonselected.png); background-size: 335px; background-repeat: no-repeat; background-position: center center; }
+.mode-person #button-findaperson img { opacity: 0; }
+
+#poi { -webkit-columns: 300px 2; padding: 10px 10px 0 10px;}
 #poi p { margin: 0; text-align: center; }
 #poi img { }
-#companies p { border: 2px outset #888; margin: 0 0 10px 0; padding: 5px 10px; cursor: pointer; background: #eee; border-radius: 3px; } 
-#companies p:hover, #poi p:hover { background: yellow; }
+
+/* panel companies */
+#companies { margin-left: 365px; width: 335px; opacity: 0; -webkit-transition: opacity 0.5s; }
+#companies p { border: solid #888; border-width: 0 0 1px; margin: 0 0 10px 0; padding: 15px 10px; cursor: pointer; }
+#companies p:hover { background: #555; }
+
 #find-meeting { width: 90%; margin: 0 auto; display: block; text-align: center; padding: 15px; font-size: 24px;  }
 #search { font-size:; 24px; padding: 5px 0; width: 500px; margin-left: 20px; }
 
@@ -161,7 +177,8 @@ $(function () {
 });
 
 function showCompanyPanel () {
-	showPanel('panel-find', 'What are you looking for?');
+	//showPanel('panel-companies', 'What are you looking for?');
+	$('#panel-find').toggleClass('mode-person');
 }
 
 
@@ -280,8 +297,14 @@ function showPersonPanel (person) {
 
 			<div id="panel-find" class="panel">
 				<!--<h3>Find a person</h2>-->
-				<div id="button-findaperson"><img src="findaperson.png" width="350"></div>
-				<div id="button-findameeting"><img src="findameeting.png" width="350"></div>
+				<div id="sideinfo">
+					<div id="button-findaperson" class="largebutton"><img src="findaperson.png" width="335" onclick="showCompanyPanel()"></div>
+					<div id="button-findameeting" class="largebutton"><img src="findameeting.png" width="335"></div>
+
+					<div id="sideinfo-desc">
+						<p>Please select the company of the person you are looking for or search all companies.</p>
+					</div>
+				</div>
 
 				<!--<h3>Points of interest</h3>-->
 				<div id="poi">
@@ -290,10 +313,7 @@ function showPersonPanel (person) {
 					<p><img alt="Gym" src="poi-gym.png" width="250"></p>
 					<p><img alt="Garage" src="poi-garage.png" width="250"></p>
 				</div>
-			</div>
 
-
-			<div id="panel-companies" class="panel">
 				<div id="companies">
 				</div>
 			</div>
