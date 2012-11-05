@@ -21,12 +21,12 @@ h1 small { color: #8f8f8f; }
 h2 { margin: 15px 0 0; font-weight: normal; font-size: 20px; letter-spacing: 1px; }
 h3 { text-transform: uppercase; color: #666; margin: 15px 15px 0; font-weight: normal; }
 
-.panel { overflow: auto; height: 675px; position: relative; }
+.panel { overflow: auto; height: 700px; position: relative; }
 .section { overflow: auto; }
 
 /* header */
 #header { position: relative; min-height: 3em; padding: 10px 0; }
-#header hr { border: none; border-top: 1px solid #8f8f8f; opacity: 0.6; }
+hr { clear: left; `border: none; border-top: 1px solid #8f8f8f; opacity: 0.6; }
 #header-time { position: absolute; right: 10px; top: 5px; text-align: right; color: #8f8f8f; vertical-align: top; }
 #header-time span { color: #fff; vertical-align: middle; font-size: 1.05em; }
 #header-time sup { text-transform: uppercase; vertical-align: middle; font-size: 0.6em; padding: 0 0 0 5px;}
@@ -36,12 +36,17 @@ h3 { text-transform: uppercase; color: #666; margin: 15px 15px 0; font-weight: n
 #nav #done-button { float: right; }
 
 /* panel find */
-.largebutton { text-align: center; margin: 15px 0; }
+.largebutton { text-align: center; margin: 30px 0 15px; cursor: pointer; }
 #sideinfo { -webkit-transition: width .5s; width: 700px; }
-#sideinfo-desc { width: 335px; }
-#sideinfo-desc, #companies, .mode-person #poi { height: 0; overflow: hidden;  }
-.mode-person #sideinfo-desc, .mode-person #companies { opacity: 1.0; overflow: visible; height: auto; }
-.mode-person #companies { height: 100%; overflow: auto; }
+#sideinfo-desc { width: 300px; }
+#sideinfo-desc, #companies, #poi { -webkit-transition: opacity .25s; }
+#sideinfo-desc, #companies { height: 0; overflow: hidden;  opacity: 0; }
+#poi { position: absolute; top: 390px; width: 680px;}
+.mode-person #poi { opacity: 0; }
+.mode-person #sideinfo-desc,
+.mode-person #listings,
+.mode-person #companies { opacity: 1.0; overflow: visible; height: auto; }
+.mode-person #companies, .mode-person #listings { height: 100%; overflow: auto; }
 .mode-person #sideinfo { width: 335px; position: absolute; top: 0; left: 0; }
 
 #button-findaperson img { -webkit-transition: background-image 1s; }
@@ -53,29 +58,33 @@ h3 { text-transform: uppercase; color: #666; margin: 15px 15px 0; font-weight: n
 #poi img { }
 
 /* panel companies */
-#companies { margin-left: 365px; width: 335px; opacity: 0; -webkit-transition: opacity 0.5s; }
-#companies p { border: solid #888; border-width: 0 0 1px; margin: 0 0 10px 0; padding: 15px 10px; cursor: pointer; }
+#companies, #listings { margin-left: 365px; width: 335px; opacity: 0; -webkit-transition: opacity 0.5s; }
+#companies p { border: solid #888; border-width: 0 0 1px; margin: 0 0 0 0; padding: 15px 10px; cursor: pointer; }
 #companies p:hover { background: #555; }
 
 #find-meeting { width: 90%; margin: 0 auto; display: block; text-align: center; padding: 15px; font-size: 24px;  }
 #search { font-size:; 24px; padding: 5px 0; width: 500px; margin-left: 20px; }
 
 /* panel search people */
-#alphabet b { display: block; cursor: pointer; border: 1px solid #333; width: 2em; height: 1em; margin-top: -1px; background: white; padding: 3px 10px; }
+#alphabet { display: none; }
+#alphabet b { display: block; cursor: pointer; border: 1px solid #333; width: 2em; height: 1em; margin-top: -1px; background: white; padding: 3px 10px; color: black; }
 #alphabet b:hover { background: #fed; }
 #alphabet { float: right; position: absolute; right: 0; }
-#items h5 { background: #a67; margin: 0; }
-#items p { border-top: 1px solid #999; padding: 10px 15px; cursor: pointer; margin: 0; }
-#items p:hover { background: yellow; }
+#items h5 { background: #222; margin: 0; padding: 5px; }
+#items p { border-bottom: 1px solid #999; padding: 10px 15px; cursor: pointer; margin: 0; }
+#items p:hover { background: #555; }
 
 .selectedfilter { background: yellow !important; }
 
 #ledtrack1 { width: 30px; float: left; }
 
 /* panel person*/
-#person-img { float: left; margin: 15px; }
-#elevator-pullout { display: block; clear: left; border: 1px solid black; padding: 15px; font-size: 24px; }
-#elevator-pullout span { display: inline-block; text-align: center; height: 40px; width: 40px; border-radius: 20px; background: #f99; padding-top: 6px; box-sizing: border-box;}
+#person-img { float: left; margin: 15px 25px 40px 15px; height: 300px; }
+#person-name { font-style: normal; font-size: 30px; margin: 1em 0 .5em; }
+#person-info { font: inherit; font-style: normal; color: #aaa; }
+
+#elevator-pullout { padding: 15px; font-size: 24px; display: inline-block; border-radius: 10px; border: 3px solid #555; padding: 10px 40px; text-align: center; cursor: pointer; }
+#elevator-pullout span { display: inline-block; text-align: center; height: 40px; width: 40px; border-radius: 20px; background: #855; padding-top: 6px; box-sizing: border-box;}
 </style>
 <script>
 
@@ -203,7 +212,9 @@ function resetAlphabetFilter() {
 }
 
 function showPeoplePanel (company) {
-	showPanel('panel-search', 'People who work at ' + company.name);
+	$('#listings').show(); $('#companies').hide();
+
+	//showPanel('panel-search', 'People who work at ' + company.name);
 	$('#items').html('');
 	resetAlphabetFilter();
 	var lastletter = '';
@@ -264,13 +275,33 @@ $(function () {
  */
 
 function showPersonPanel (person) {
-	showPanel('panel-person', person.name);
+	showPanel('panel-person', '');
 	//$('#person-name').text(person.name);
-	$('#person-info').text('Employee at ' + person.company + '\n' + person.email + '\n' + person.phone)
+	var phoneNumber = '(' + String(person.phone).substr(0, 3) + ') ' + String(person.phone).substr(3, 3) + '-' + String(person.phone).substr(6)
+	$('#person-name').text(person.name);
+	$('#person-info').text('Employee at ' + person.company + '\n' +
+		phoneNumber + '\n' +
+		person.email);
 	$('#person-img')
 		.attr('src', 'http://placekitten.com/' + Math.round(200 + Math.random() * 10) + '/' + Math.round(150 + Math.random() * 10))
-		.css({width: 200 + 'px', height: 150 + 'px'})
+		.css({width: 250 + 'px', height: 300 + 'px'})
 }
+
+
+/**
+ * Clock
+ */
+
+var tswitch = false;
+function updateClock() {
+	tswitch = !tswitch;
+	var hours = (new Date().getHours() + 23) % 12 + 1;
+	$('#header-time a').text((new Date().getMonth() + 1) + '/' + new Date().getDate() + '/' + String(new Date().getFullYear()).substr(-2));
+	$('#header-time span').text(hours + (tswitch ? ':' : ' ') + ('00' + new Date().getMinutes()).substr(-2));
+	$('#header-time sup').text(new Date.getHours() < 12 ? 'am' : 'pm')
+};
+setInterval(updateClock, 1000)
+$(updateClock);
 
 </script>
 <body>
@@ -283,12 +314,11 @@ function showPersonPanel (person) {
 	<div id="kiosk">
 		<div id="header" class="section" style="cursor: pointer">
 			<h1>Rogers Building<br><small>293 Rogers Street</small></h1>
-			<p id="header-time">10/29/12<br><span>9:15</span><sup>am</sup></p>
+			<p id="header-time"><a>10/29/12</a><br><span>9:15</span><sup>am</sup></p>
 			<hr>
 		</div>
 
 		<div id="nav" class="section">
-			<button id="back-button">&larr; BACK</button>
 			<!--<button id="done-button">I'm Finished</button>-->
 			<h2>Michael Dolphin</h2>
 		</div>
@@ -316,10 +346,7 @@ function showPersonPanel (person) {
 
 				<div id="companies">
 				</div>
-			</div>
 
-			<div id="panel-search" class="panel">
-				<input type="text" id="search" placeholder="Search for a name...">
 				<div id="listings">
 					<div id="alphabet"></div>
 					<div id="items">
@@ -327,22 +354,34 @@ function showPersonPanel (person) {
 				</div>
 			</div>
 
+			<!--
+			<div id="panel-search" class="panel">
+				<input type="text" id="search" placeholder="Search for a name...">
+			</div>
+		-->
+
 			<div id="panel-person" class="panel">
 				<img id="person-img" src="http://placekitten.com/200/200">
 				<address>
+					<h2 id="person-name"></h2>
 					<pre id="person-info">
 						Disney Interactive<br>
 						michael.d@disney-interactive.com<br>
 						(781) 393-5555
 					</pre>
+			<button id="back-button">&larr; BACK</button>
+					<br><br>
+					<div id="elevator-pullout">
+						<span>9</span><br>
+						Call Elevator
+					</div>
 				</address>
 
+				<hr>
+
 				<div id="elevatorinfo">
-					<div id="elevator-pullout">
-						Please choose: Floor <span>9</span> &nbsp;&nbsp;&nbsp; (Elevator <span>A</span>) &nbsp;&nbsp;&nbsp;
-					</div>
-					<div id="panel-img">
-						<img src="http://www.bestctoffices.com/images/Units%2034%20detail.gif" width="700">
+					<div id="panel-img" style="text-align: center">
+						<img height= "330" src="http://www.bestctoffices.com/images/Units%2034%20detail.gif">
 					</div>
 				</div>
 			</div>
