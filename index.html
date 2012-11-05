@@ -49,9 +49,14 @@ hr { clear: left; border: none; border-top: 1px solid #565656; opacity: 0.6; }
 .mode-person #companies, .mode-person #listings { height: 100%; overflow: auto; }
 .mode-person #sideinfo { width: 335px; position: absolute; top: 0; left: 0; }
 
-#button-findaperson img { -webkit-transition: background-image 1s; }
-.mode-person #button-findaperson { background: url(findapersonselected.png); background-size: 335px; background-repeat: no-repeat; background-position: center center; }
-.mode-person #button-findaperson img { opacity: 0; }
+#sideinfo-block-start,
+#sideinfo-block-companies { -webkit-transition: height 0.5s; -webkit-transition: opacity 0.5s; z-index: 500;}
+#sideinfo.companies #sideinfo-block-start,
+#sideinfo.start #sideinfo-block-companies { height: 0; opacity: 0; z-index: -500; overflow: hidden; }
+
+#button-findaperson { background-image: url(find-person.png); background-size: 335px 146px; background-repeat: no-repeat; background-position: center center; -webkit-transition: background-image 0.25s; }
+.mode-person #button-findaperson { background-image: url(find-person-selected.png); }
+#button-findaperson img { opacity: 0; }
 
 #poi { -webkit-columns: 300px 2; padding: 10px 10px 0 10px;}
 #poi p { margin: 0; text-align: center; cursor: pointer; }
@@ -96,6 +101,10 @@ hr { clear: left; border: none; border-top: 1px solid #565656; opacity: 0.6; }
 #elevatorletter { width: 300px; height: 300px; background: #888; color: white; font-family: Arial Black, Arial, sans-serif; line-height: 300px; text-align: center; font-size: 190px; margin: 30px auto;}
 
 #panel-img { background: #ccc; border: 2px solid #111; padding: 15px 0;}
+
+.backbtn { height: 40px; width: 150px; background-size: 150px 40px; background-image: url(back-button-bg.png);
+background-position: center center; margin: 20px 0; display: block; text-align: center; background-repeat: no-repeat;
+line-height: 40px; padding-left: 6px; color: #999; cursor: pointer; }
 </style>
 <script>
 
@@ -196,13 +205,17 @@ $(function () {
 	companies.forEach(function (company) {
 		$('<p></p>').text(company.name).appendTo('#companies').on('click', function () {
 			showPeoplePanel(company);
+			$('#sideinfo').removeClass('start').addClass('companies');
 		})
 	})
 });
 
-function showCompanyPanel () {
+function showCompanyPanel (modeperson) {
 	//showPanel('panel-companies', 'What are you looking for?');
-	$('#panel-find').toggleClass('mode-person');
+	$('h2').text('Choose a company.');
+	$('#panel-find').toggleClass('mode-person', modeperson);
+	$('#listings').hide(); $('#companies').show();
+	$('#sideinfo').addClass('start').removeClass('companies');
 }
 
 
@@ -227,6 +240,7 @@ function resetAlphabetFilter() {
 }
 
 function showPeoplePanel (company) {
+	$('h2').text('-').html('&nbsp; ');
 	$('#listings').show(); $('#companies').hide();
 
 	//showPanel('panel-search', 'People who work at ' + company.name);
@@ -366,9 +380,9 @@ setInterval(countdown, 1000);
 
 			<div id="panel-find" class="panel">
 				<!--<h3>Find a person</h2>-->
-				<div id="sideinfo">
+				<div id="sideinfo" class="start">
 					<div class="sideinfo-block" id="sideinfo-block-start">
-						<div id="button-findaperson" class="largebutton"><img src="findaperson.png" width="335" onclick="showCompanyPanel()"></div>
+						<div id="button-findaperson" class="largebutton"><img src="find-person.png" width="335" onclick="showCompanyPanel()"></div>
 						<div id="button-findameeting" class="largebutton"><img src="findameeting.png" width="335"></div>
 
 						<div id="sideinfo-desc">
@@ -376,8 +390,11 @@ setInterval(countdown, 1000);
 						</div>
 					</div>
 
-					<div class="sideinfo-block" id="sideinfo-block-companies">
-						<p>Apple</h1>
+					<div class="sideinfo-block" id="sideinfo-block-companies" style="margin-top: 20px">
+						<img src="applelogo.png" width="100">
+						<p style="font-size: 36px; margin: 10px 0;">Apple</p>
+						<p style="color: #999; margin: 0;">(781) 333-8888<br>rogerstreet@apple.com<br><br>Located on floor 9.</p>
+						<div class="backbtn" onclick="showCompanyPanel(true)">All Companies</div>
 					</div>
 				</div>
 
