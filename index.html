@@ -11,8 +11,9 @@ html, body { margin: 0; padding: 0;
 html, body { width: 800px; height: 100%; height: 100%; position: relative; background: black; color: white; }
 
 #floorbuttons { width: 280px; height: 100%; position: fixed; top: 0; left: 0;}
-#floorbuttons table { height: 100%; width: 250px; border-spacing: 8px; }
-#floorbuttons td { border-radius: 10px; border: 5px outset #999; background: #ccc; font-family: Courier; text-align: center; color: black; font-size: 24px; height: 40px;}
+#floorbuttons table { width: 250px; border-spacing: 8px; }
+#floorbuttons td { text-align: center; color: black; font-size: 20px; height: 40px; background: url(floor-button.png); padding-top: 5px; cursor: pointer; }
+#floorbuttons td.active { background: url(floor-button-selected.png); color: #ddd; } 
 
 #kiosk { width: 700px; height: 884px; position: relative; margin-left: 300px; background: #363636; padding: 8px 25px; }
 
@@ -171,6 +172,9 @@ $(function () {
 	$('<tr><td>Lobby</td></tr>').appendTo('#floorbuttons table');
 	$('<tr><td>Garage A</td></tr>').appendTo('#floorbuttons table');
 	$('<tr><td>Garage B</td></tr>').appendTo('#floorbuttons table');
+	$('#floorbuttons td').on('click', function () {
+		$(this).toggleClass('active');
+	})
 });
 
 
@@ -334,6 +338,12 @@ function showRoom (name) {
 }
 
 function elevatorCalled (floor) {
+	$('#elevatorcalledtext').text('Your elevator to floor ' + floor + ' has been called.');
+	$('#floorbuttons td').each(function (i, td) {
+		if ($(td).text() == floor) {
+			$(td).addClass('active');
+		}
+	})
 	showPanel('panel-called', '');
 	$('#countdown').text('30 seconds');
 }
@@ -458,7 +468,7 @@ setInterval(countdown, 1000);
 			</div>
 
 			<div id="panel-called" class="panel">
-				<h1>Your elevator has been called.</h1>
+				<h1 id="elevatorcalledtext">Your elevator has been called.</h1>
 
 				<div id="elevatorletter">E</div>
 
