@@ -252,26 +252,40 @@ function resetAlphabetFilter() {
 	$('#alphabet b').removeClass('selectedfilter');
 }
 
+var mtgs = ['Meeting Room 100', 'Meeting Room 101', 'Meeting Room 102'];
+
 function showPeoplePanel (company) {
+	var doShowPeople = $('#panel-find').hasClass('mode-person');
+
 	$('h2').text('-').html('&nbsp; ');
 	$('#listings').show(); $('#companies').hide();
 
 	//showPanel('panel-search', 'People who work at ' + company.name);
 	$('#items').html('');
-	resetAlphabetFilter();
-	var lastletter = '';
-	people.filter(function (person) {
-		return !company || person.company == company.name;
-	}).forEach(function (person) {
-		if (person.name.charAt(0) != lastletter) {
-			lastletter = person.name[0];
-			$('<h5>').text(lastletter).appendTo('#items');
-		}
-		$('<p></p>').text(person.name).appendTo('#items').on('click', function () {
-			showPersonPanel(person);
+
+	$('#alphabet').toggle(doShowPeople);
+	if (doShowPeople) {
+		resetAlphabetFilter();
+		var lastletter = '';
+		people.filter(function (person) {
+			return !company || person.company == company.name;
+		}).forEach(function (person) {
+			if (person.name.charAt(0) != lastletter) {
+				lastletter = person.name[0];
+				$('<h5>').text(lastletter).appendTo('#items');
+			}
+			$('<p></p>').text(person.name).appendTo('#items').on('click', function () {
+				showPersonPanel(person);
+			})
 		})
-	})
-	$('#search').focus();
+		$('#search').focus();
+	} else {
+		mtgs.forEach(function (mtg) {
+			$('<p></p>').text(mtg).appendTo('#items').on('click', function () {
+				showRoom(mtg);
+			})
+		});
+	}
 }
 
 $(function () {
@@ -406,6 +420,7 @@ setInterval(countdown, 1000);
 
 						<div id="sideinfo-desc">
 							<p>Please select the company of the person you are looking for or search all companies.</p>
+							<img src="search-all-companies-selected.png" onclick="showPeoplePanel(null)">
 						</div>
 					</div>
 
@@ -450,7 +465,7 @@ setInterval(countdown, 1000);
 						michael.d@disney-interactive.com<br>
 						(781) 393-5555
 					</pre>
-				  <div id="back-button" class="backbtn">Pick Person</div>
+				  <div id="back-button" class="backbtn">Choose Again</div>
 					<div id="elevator-pullout" onclick="elevatorCalled(9)">
 						<span>9</span><br>
 						Call Elevator
