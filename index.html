@@ -12,7 +12,7 @@ html, body { width: 800px; height: 100%; height: 100%; position: relative; backg
 
 #floorbuttons { width: 280px; height: 100%; position: fixed; top: 0; left: 0;}
 #floorbuttons table { height: 100%; width: 250px; border-spacing: 8px; }
-#floorbuttons td { border-radius: 10px; border: 5px outset #999; background: #ccc; font-family: Courier; text-align: center; color: black; font-size: 24px; }
+#floorbuttons td { border-radius: 10px; border: 5px outset #999; background: #ccc; font-family: Courier; text-align: center; color: black; font-size: 24px; height: 40px;}
 
 #kiosk { width: 700px; height: 884px; position: relative; margin-left: 300px; background: #363636; padding: 8px 25px; }
 
@@ -42,21 +42,27 @@ hr { clear: left; border: none; border-top: 1px solid #565656; opacity: 0.6; }
 #sideinfo-desc, #companies, #poi { -webkit-transition: opacity .25s; }
 #sideinfo-desc, #companies { height: 0; overflow: hidden;  opacity: 0; }
 #poi { position: absolute; top: 420px; width: 680px; z-index: 100;}
-.mode-person #poi { opacity: 0; z-index: -5; }
-.mode-person #sideinfo-desc,
-.mode-person #listings,
-.mode-person #companies { opacity: 1.0; overflow: visible; height: auto; }
-.mode-person #companies, .mode-person #listings { height: 100%; overflow: auto; }
-.mode-person #sideinfo { width: 335px; position: absolute; top: 0; left: 0; }
+.mode-person #poi, .mode-room #poi  { opacity: 0; z-index: -5; }
+.mode-person #sideinfo-desc, .mode-room #sideinfo-desc,
+.mode-person #listings, .mode-room #listings,
+.mode-person #companies, .mode-room #companies { opacity: 1.0; overflow: visible; height: auto; }
+.mode-person #companies, .mode-room #companies, 
+.mode-person #listings, .mode-room #listings { height: 100%; overflow: auto; }
+.mode-person #sideinfo, .mode-room #sideinfo { width: 335px; position: absolute; top: 0; left: 0; }
 
 #sideinfo-block-start,
 #sideinfo-block-companies { -webkit-transition: height 0.5s; -webkit-transition: opacity 0.5s; z-index: 500;}
 #sideinfo.companies #sideinfo-block-start,
 #sideinfo.start #sideinfo-block-companies { height: 0; opacity: 0; z-index: -500; overflow: hidden; }
 
-#button-findaperson { background-image: url(find-person.png); background-size: 335px 146px; background-repeat: no-repeat; background-position: center center; -webkit-transition: background-image 0.25s; }
+#button-findaperson,
+#button-findameeting { background-size: 335px 146px; background-repeat: no-repeat; background-position: center center; -webkit-transition: background-image 0.25s; }
+#button-findaperson img,
+#button-findameeting img { opacity: 0; }
+#button-findaperson { background-image: url(find-person.png); }
 .mode-person #button-findaperson { background-image: url(find-person-selected.png); }
-#button-findaperson img { opacity: 0; }
+#button-findameeting { background-image: url(find-meetingroom.png); }
+.mode-room #button-findameeting { background-image: url(find-meetingroom-selected.png); }
 
 #poi { -webkit-columns: 300px 2; padding: 10px 10px 0 10px;}
 #poi p { margin: 0; text-align: center; cursor: pointer; }
@@ -83,18 +89,19 @@ hr { clear: left; border: none; border-top: 1px solid #565656; opacity: 0.6; }
 #ledtrack1 { width: 30px; float: left; }
 
 #poiheader span { font-size: 20px; display: block; position: absolute; top: -5px; background: #363636; padding-right: 15px; letter-spacing: 0.1em;}
-#poiheader { border-bottom: 1px solid #565656; padding-top: 10px; position: relative; margin: 15px 0; }
-.mode-person #poiheader { display: none; }
+#poiheader { border-bottom: 1px solid #565656; padding-top: 10px; position: relative; margin: 0 0; }
+.mode-person #poiheader, .mode-room #poiheader { display: none; }
 
 /* panel person*/
 #person-img { float: left; margin: 15px 25px 40px 15px; height: 300px; }
 #person-name { font-style: normal; font-size: 30px; margin: 1em 0 .5em; }
 #person-info { font: inherit; font-style: normal; color: #aaa; }
+#person-info-box { margin-left: 240px; }
 
 .panel.room #person-img { display: none; }
 
-#elevator-pullout { padding: 15px; font-size: 24px; display: inline-block; border-radius: 10px; border: 3px solid #555; padding: 10px 40px; text-align: center; cursor: pointer; font-style: normal; }
-#elevator-pullout span { display: inline-block; text-align: center; height: 40px; width: 40px; border-radius: 20px; background: #855; padding-top: 6px; box-sizing: border-box;}
+#elevator-pullout { padding: 15px; font-size: 24px; display: inline-block; border-radius: 10px; border: 2px solid #555; padding: 10px 40px; text-align: center; cursor: pointer; font-style: normal; }
+#elevator-pullout span { display: inline-block; text-align: center; height: 40px; width: 40px; border-radius: 20px; background: #555; padding-top: 6px; box-sizing: border-box;}
 
 /* elevator called. */
 #panel-called h1 { text-align: center; margin: 20px 0; }
@@ -173,6 +180,7 @@ $(function () {
 
 function showLookingPanel () {
 	showPanel('panel-find', 'What are you looking for?');
+	$('#sideinfo').addClass('start').removeClass('companies');
 }
 
 /**
@@ -210,10 +218,11 @@ $(function () {
 	})
 });
 
-function showCompanyPanel (modeperson) {
+function showCompanyPanel (modeperson, modecompany) {
 	//showPanel('panel-companies', 'What are you looking for?');
 	$('h2').text('Choose a company.');
 	$('#panel-find').toggleClass('mode-person', modeperson);
+	$('#panel-find').toggleClass('mode-room', modecompany);
 	$('#listings').hide(); $('#companies').show();
 	$('#sideinfo').addClass('start').removeClass('companies');
 }
@@ -382,8 +391,8 @@ setInterval(countdown, 1000);
 				<!--<h3>Find a person</h2>-->
 				<div id="sideinfo" class="start">
 					<div class="sideinfo-block" id="sideinfo-block-start">
-						<div id="button-findaperson" class="largebutton"><img src="find-person.png" width="335" onclick="showCompanyPanel()"></div>
-						<div id="button-findameeting" class="largebutton"><img src="findameeting.png" width="335"></div>
+						<div id="button-findaperson" class="largebutton"><img src="find-person.png" width="335" onclick="showCompanyPanel(null, false)"></div>
+						<div id="button-findameeting" class="largebutton"><img src="findameeting.png" width="335" onclick="showCompanyPanel(false, null)"></div>
 
 						<div id="sideinfo-desc">
 							<p>Please select the company of the person you are looking for or search all companies.</p>
@@ -394,7 +403,7 @@ setInterval(countdown, 1000);
 						<img src="applelogo.png" width="100">
 						<p style="font-size: 36px; margin: 10px 0;">Apple</p>
 						<p style="color: #999; margin: 0;">(781) 333-8888<br>rogerstreet@apple.com<br><br>Located on floor 9.</p>
-						<div class="backbtn" onclick="showCompanyPanel(true)">All Companies</div>
+						<div class="backbtn" onclick="showCompanyPanel(true, false)">All Companies</div>
 					</div>
 				</div>
 
@@ -424,20 +433,19 @@ setInterval(countdown, 1000);
 
 			<div id="panel-person" class="panel room">
 				<img id="person-img" src="businesswoman.png">
-				<address>
+				<div id="person-info-box">
 					<h2 id="person-name"></h2>
 					<pre id="person-info">
 						Disney Interactive<br>
 						michael.d@disney-interactive.com<br>
 						(781) 393-5555
 					</pre>
-			<button id="back-button">&larr; BACK</button>
-					<br><br>
+				  <div id="back-button" class="backbtn">Pick Person</div>
 					<div id="elevator-pullout" onclick="elevatorCalled(9)">
 						<span>9</span><br>
 						Call Elevator
 					</div>
-				</address>
+				</div>
 
 				<hr>
 
