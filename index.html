@@ -10,15 +10,15 @@ html, body { margin: 0; padding: 0;
 	font-size: 18px; font-family: Helvetica Neue, Helvetica, Arial, sans-serif; }
 html, body { width: 800px; height: 100%; height: 100%; position: relative; background: black; color: white; }
 
-#floorbuttons { width: 280px; height: 100%; background: #655; position: fixed; top: 0; left: 0;}
+#floorbuttons { width: 280px; height: 100%; position: fixed; top: 0; left: 0;}
 #floorbuttons table { height: 100%; width: 250px; border-spacing: 8px; }
-#floorbuttons td { border-radius: 10px; border: 5px outset #999; background: #ccc; font-family: Courier; text-align: center; }
+#floorbuttons td { border-radius: 10px; border: 5px outset #999; background: #ccc; font-family: Courier; text-align: center; color: black; font-size: 24px; }
 
 #kiosk { width: 700px; height: 884px; position: relative; margin-left: 300px; background: #363636; padding: 8px 25px; }
 
 h1 { margin: 0; font-size: 30px; padding: 10px 0; font-weight: normal; line-height: 1.0;}
 h1 small { color: #8f8f8f; }
-h2 { margin: 15px 0 0; font-weight: normal; font-size: 20px; letter-spacing: 1px; }
+h2 { margin: 15px 0 0; font-weight: normal; font-size: 20px; letter-spacing: 0.05em; }
 h3 { text-transform: uppercase; color: #666; margin: 15px 15px 0; font-weight: normal; }
 
 .panel { overflow: auto; height: 700px; position: relative; }
@@ -26,7 +26,7 @@ h3 { text-transform: uppercase; color: #666; margin: 15px 15px 0; font-weight: n
 
 /* header */
 #header { position: relative; min-height: 3em; padding: 10px 0; }
-hr { clear: left; `border: none; border-top: 1px solid #8f8f8f; opacity: 0.6; }
+hr { clear: left; border: none; border-top: 1px solid #565656; opacity: 0.6; }
 #header-time { position: absolute; right: 10px; top: 5px; text-align: right; color: #8f8f8f; vertical-align: top; }
 #header-time span { color: #fff; vertical-align: middle; font-size: 1.05em; }
 #header-time sup { text-transform: uppercase; vertical-align: middle; font-size: 0.6em; padding: 0 0 0 5px;}
@@ -41,8 +41,8 @@ hr { clear: left; `border: none; border-top: 1px solid #8f8f8f; opacity: 0.6; }
 #sideinfo-desc { width: 300px; }
 #sideinfo-desc, #companies, #poi { -webkit-transition: opacity .25s; }
 #sideinfo-desc, #companies { height: 0; overflow: hidden;  opacity: 0; }
-#poi { position: absolute; top: 390px; width: 680px;}
-.mode-person #poi { opacity: 0; }
+#poi { position: absolute; top: 420px; width: 680px; z-index: 100;}
+.mode-person #poi { opacity: 0; z-index: -5; }
 .mode-person #sideinfo-desc,
 .mode-person #listings,
 .mode-person #companies { opacity: 1.0; overflow: visible; height: auto; }
@@ -54,37 +54,48 @@ hr { clear: left; `border: none; border-top: 1px solid #8f8f8f; opacity: 0.6; }
 .mode-person #button-findaperson img { opacity: 0; }
 
 #poi { -webkit-columns: 300px 2; padding: 10px 10px 0 10px;}
-#poi p { margin: 0; text-align: center; }
+#poi p { margin: 0; text-align: center; cursor: pointer; }
 #poi img { }
 
 /* panel companies */
 #companies, #listings { margin-left: 365px; width: 335px; opacity: 0; -webkit-transition: opacity 0.5s; }
-#companies p { border: solid #888; border-width: 0 0 1px; margin: 0 0 0 0; padding: 15px 10px; cursor: pointer; }
+#companies p { border: solid #565656; border-width: 0 0 1px; margin: 0 0 0 0; padding: 15px 10px; cursor: pointer; }
 #companies p:hover { background: #555; }
 
 #find-meeting { width: 90%; margin: 0 auto; display: block; text-align: center; padding: 15px; font-size: 24px;  }
 #search { font-size:; 24px; padding: 5px 0; width: 500px; margin-left: 20px; }
 
 /* panel search people */
-#alphabet { display: none; }
-#alphabet b { display: block; cursor: pointer; border: 1px solid #333; width: 2em; height: 1em; margin-top: -1px; background: white; padding: 3px 10px; color: black; }
-#alphabet b:hover { background: #fed; }
+#alphabet b { display: block; cursor: pointer; width: 1em; height: 20px; margin-top: -1px; background: #363636; padding: 3px 10px 4.8px; color: white; text-align: center;}
+#alphabet b:hover { color: #363636; background: white; }
 #alphabet { float: right; position: absolute; right: 0; }
 #items h5 { background: #222; margin: 0; padding: 5px; }
-#items p { border-bottom: 1px solid #999; padding: 10px 15px; cursor: pointer; margin: 0; }
+#items p { border-bottom: 1px solid #565656; padding: 10px 15px; cursor: pointer; margin: 0; }
 #items p:hover { background: #555; }
 
-.selectedfilter { background: yellow !important; }
+.selectedfilter { background: #888 !important; }
 
 #ledtrack1 { width: 30px; float: left; }
+
+#poiheader span { font-size: 20px; display: block; position: absolute; top: -5px; background: #363636; padding-right: 15px; letter-spacing: 0.1em;}
+#poiheader { border-bottom: 1px solid #565656; padding-top: 10px; position: relative; margin: 15px 0; }
+.mode-person #poiheader { display: none; }
 
 /* panel person*/
 #person-img { float: left; margin: 15px 25px 40px 15px; height: 300px; }
 #person-name { font-style: normal; font-size: 30px; margin: 1em 0 .5em; }
 #person-info { font: inherit; font-style: normal; color: #aaa; }
 
-#elevator-pullout { padding: 15px; font-size: 24px; display: inline-block; border-radius: 10px; border: 3px solid #555; padding: 10px 40px; text-align: center; cursor: pointer; }
+.panel.room #person-img { display: none; }
+
+#elevator-pullout { padding: 15px; font-size: 24px; display: inline-block; border-radius: 10px; border: 3px solid #555; padding: 10px 40px; text-align: center; cursor: pointer; font-style: normal; }
 #elevator-pullout span { display: inline-block; text-align: center; height: 40px; width: 40px; border-radius: 20px; background: #855; padding-top: 6px; box-sizing: border-box;}
+
+/* elevator called. */
+#panel-called h1 { text-align: center; margin: 20px 0; }
+#elevatorletter { width: 300px; height: 300px; background: #888; color: white; font-family: Arial Black, Arial, sans-serif; line-height: 300px; text-align: center; font-size: 190px; margin: 30px auto;}
+
+#panel-img { background: #ccc; border: 2px solid #111; padding: 15px 0;}
 </style>
 <script>
 
@@ -122,6 +133,10 @@ $(function () {
 
 $(function () {
 	$('#header').on('click', function () {
+		showLookingPanel();
+		$('#panel-find').removeClass('mode-person').removeClass('mode-room');
+	});
+	$('#header-time').on('click', function () {
 		var elem = $('body')[0];
 		if (elem.requestFullScreen) {
 		  elem.requestFullScreen();
@@ -276,6 +291,7 @@ $(function () {
 
 function showPersonPanel (person) {
 	showPanel('panel-person', '');
+	$('#panel-person').removeClass('room').addClass('human');
 	//$('#person-name').text(person.name);
 	var phoneNumber = '(' + String(person.phone).substr(0, 3) + ') ' + String(person.phone).substr(3, 3) + '-' + String(person.phone).substr(6)
 	$('#person-name').text(person.name);
@@ -283,8 +299,20 @@ function showPersonPanel (person) {
 		phoneNumber + '\n' +
 		person.email);
 	$('#person-img')
-		.attr('src', 'http://placekitten.com/' + Math.round(200 + Math.random() * 10) + '/' + Math.round(150 + Math.random() * 10))
-		.css({width: 250 + 'px', height: 300 + 'px'})
+		//.attr('src', 'http://placekitten.com/' + Math.round(200 + Math.random() * 10) + '/' + Math.round(150 + Math.random() * 10))
+		.css({width: 200 + 'px', height: 300 + 'px'})
+}
+
+function showRoom (name) {
+	showPanel('panel-person', '');
+	$('#panel-person').addClass('room').removeClass('human');
+	$('#person-name').text(name);
+	$('#person-info').text('Currently Occupied');
+}
+
+function elevatorCalled (floor) {
+	showPanel('panel-called', '');
+	$('#countdown').text('30 seconds');
 }
 
 
@@ -298,10 +326,21 @@ function updateClock() {
 	var hours = (new Date().getHours() + 23) % 12 + 1;
 	$('#header-time a').text((new Date().getMonth() + 1) + '/' + new Date().getDate() + '/' + String(new Date().getFullYear()).substr(-2));
 	$('#header-time span').text(hours + (tswitch ? ':' : ' ') + ('00' + new Date().getMinutes()).substr(-2));
-	$('#header-time sup').text(new Date.getHours() < 12 ? 'am' : 'pm')
+	$('#header-time sup').text(new Date().getHours() < 12 ? 'am' : 'pm')
 };
 setInterval(updateClock, 1000)
 $(updateClock);
+
+function countdown() {
+	var txt = parseInt($('#countdown').text());
+	if (txt) {
+		$('#countdown').text(txt - 1 + ' seconds');
+	} else {
+		$('#countdown').text('Your elevator has arrived.');
+	}
+}
+
+setInterval(countdown, 1000);
 
 </script>
 <body>
@@ -328,20 +367,26 @@ $(updateClock);
 			<div id="panel-find" class="panel">
 				<!--<h3>Find a person</h2>-->
 				<div id="sideinfo">
-					<div id="button-findaperson" class="largebutton"><img src="findaperson.png" width="335" onclick="showCompanyPanel()"></div>
-					<div id="button-findameeting" class="largebutton"><img src="findameeting.png" width="335"></div>
+					<div class="sideinfo-block" id="sideinfo-block-start">
+						<div id="button-findaperson" class="largebutton"><img src="findaperson.png" width="335" onclick="showCompanyPanel()"></div>
+						<div id="button-findameeting" class="largebutton"><img src="findameeting.png" width="335"></div>
 
-					<div id="sideinfo-desc">
-						<p>Please select the company of the person you are looking for or search all companies.</p>
+						<div id="sideinfo-desc">
+							<p>Please select the company of the person you are looking for or search all companies.</p>
+						</div>
+					</div>
+
+					<div class="sideinfo-block" id="sideinfo-block-companies">
+						<p>Apple</h1>
 					</div>
 				</div>
 
-				<!--<h3>Points of interest</h3>-->
+				<div id="poiheader"><span>Popular Destinations</span></div>
 				<div id="poi">
-					<p><img alt="Cafeteria" src="poi-cafeteria.png" width="250"></p>
-					<p><img alt="Auditorium" src="poi-auditorium.png" width="250"></p>
-					<p><img alt="Gym" src="poi-gym.png" width="250"></p>
-					<p><img alt="Garage" src="poi-garage.png" width="250"></p>
+					<p onclick="elevatorCalled(5)"><img alt="Cafeteria" src="poi-cafeteria.png" width="250"></p>
+					<p onclick="elevatorCalled(6)"><img alt="Auditorium" src="poi-auditorium.png" width="250"></p>
+					<p onclick="elevatorCalled(7)"><img alt="Gym" src="poi-gym.png" width="250"></p>
+					<p onclick="elevatorCalled(8)"><img alt="Garage" src="poi-garage.png" width="250"></p>
 				</div>
 
 				<div id="companies">
@@ -360,8 +405,8 @@ $(updateClock);
 			</div>
 		-->
 
-			<div id="panel-person" class="panel">
-				<img id="person-img" src="http://placekitten.com/200/200">
+			<div id="panel-person" class="panel room">
+				<img id="person-img" src="businesswoman.png">
 				<address>
 					<h2 id="person-name"></h2>
 					<pre id="person-info">
@@ -371,7 +416,7 @@ $(updateClock);
 					</pre>
 			<button id="back-button">&larr; BACK</button>
 					<br><br>
-					<div id="elevator-pullout">
+					<div id="elevator-pullout" onclick="elevatorCalled(9)">
 						<span>9</span><br>
 						Call Elevator
 					</div>
@@ -380,10 +425,19 @@ $(updateClock);
 				<hr>
 
 				<div id="elevatorinfo">
+					<br>
 					<div id="panel-img" style="text-align: center">
-						<img height= "330" src="http://www.bestctoffices.com/images/Units%2034%20detail.gif">
+						<img width= "680" src="office_floorplan.png">
 					</div>
 				</div>
+			</div>
+
+			<div id="panel-called" class="panel">
+				<h1>Your elevator has been called.</h1>
+
+				<div id="elevatorletter">E</div>
+
+				<h1 id="countdown">30 seconds</h1>
 			</div>
 		</div>
 
