@@ -12,8 +12,11 @@ html, body { width: 800px; height: 100%; height: 100%; position: relative; backg
 
 #floorbuttons { width: 280px; height: 100%; position: fixed; top: 0; left: 0;}
 #floorbuttons table { width: 250px; border-spacing: 8px; }
-#floorbuttons td { text-align: center; color: black; font-size: 20px; height: 40px; background: url(floor-button.png); padding-top: 5px; cursor: pointer; }
+#floorbuttons td { text-align: center; color: black; font-size: 20px; height: 40px; background: url(floor-button.png); padding-top: 5px; cursor: pointer; position: relative; }
 #floorbuttons td.active { background: url(floor-button-selected.png); color: #ddd; } 
+#floorbuttons td b { display: none; }
+#floorbuttons td.active b { display: block; position: absolute; right: 10px; top: 15px; font-weight: normal; font-size: 16px; }
+#floorbuttons td b::before { color: white; background: red; margin-right: 10px; content: "E"; padding: .2em .47em; font-size: 12px; font-weight: bold; vertical-align: middle; }
 
 #kiosk { width: 700px; height: 884px; position: relative; margin-left: 300px; background: #363636; padding: 8px 25px; }
 
@@ -106,13 +109,15 @@ hr { clear: left; border: none; border-top: 1px solid #565656; opacity: 0.6; }
 
 /* elevator called. */
 #panel-called h1 { text-align: center; margin: 20px 0; }
-#elevatorletter { width: 300px; height: 300px; background: #888; color: white; font-family: Arial Black, Arial, sans-serif; line-height: 300px; text-align: center; font-size: 190px; margin: 30px auto;}
+#elevatorletter { width: 300px; height: 300px; background: red; color: white; font-family: Arial Black, Arial, sans-serif; line-height: 300px; text-align: center; font-size: 190px; margin: 30px auto;}
 
 #panel-img { background: #ccc; border: 2px solid #111; padding: 15px 0;}
 
 .backbtn { height: 40px; width: 150px; background-size: 150px 40px; background-image: url(back-button-bg.png);
 background-position: center center; margin: 20px 0; display: block; text-align: center; background-repeat: no-repeat;
 line-height: 40px; padding-left: 6px; color: #999; cursor: pointer; }
+
+
 </style>
 <script>
 
@@ -167,13 +172,16 @@ $(function () {
 
 $(function () {
 	for (var i = 1; i < 12; i++) {
-		$('<tr><td>' + i + '</td></tr>').prependTo('#floorbuttons table');
+		$('<tr><td><span>' + i + '</span><b></b></td></tr>').prependTo('#floorbuttons table');
 	}
-	$('<tr><td>Lobby</td></tr>').appendTo('#floorbuttons table');
-	$('<tr><td>Garage A</td></tr>').appendTo('#floorbuttons table');
-	$('<tr><td>Garage B</td></tr>').appendTo('#floorbuttons table');
+	$('<tr><td><span>Lobby</span><b></b></td></tr>').appendTo('#floorbuttons table');
+	$('<tr><td><span>Garage A</span><b></b></td></tr>').appendTo('#floorbuttons table');
+	$('<tr><td><span>Garage B</span><b></b></td></tr>').appendTo('#floorbuttons table');
 	$('#floorbuttons td').on('click', function () {
-		$(this).toggleClass('active');
+		if (!$(this).hasClass('active')) {
+			$(this).addClass('active');
+			$('b', this).text('0:30');
+		}
 	})
 });
 
@@ -254,7 +262,13 @@ function resetAlphabetFilter() {
 
 var mtgs = ['Meeting Room 100', 'Meeting Room 101', 'Meeting Room 102'];
 
+
+var showAll = false;
+
 function showPeoplePanel (company) {
+	if (!company) {
+		showAll = true;
+	}
 	var doShowPeople = $('#panel-find').hasClass('mode-person');
 
 	$('h2').text('-').html('&nbsp; ');
@@ -354,7 +368,7 @@ function showRoom (name) {
 function elevatorCalled (floor) {
 	$('#elevatorcalledtext').text('Your elevator to floor ' + floor + ' has been called.');
 	$('#floorbuttons td').each(function (i, td) {
-		if ($(td).text() == floor) {
+		if ($('span', td).text() == floor) {
 			$(td).addClass('active');
 		}
 	})
@@ -385,6 +399,16 @@ function countdown() {
 	} else {
 		$('#countdown').text('Your elevator has arrived.');
 	}
+
+	$('#floorbuttons td.active b').each(function (i, td) {
+		var sec = Number($(td).text().substr(2)) - 1;
+		if (sec) {
+			$(td).text('0:' + ('00' + sec).substr(-2));
+		} else {
+			$(td).parent('td').removeClass('active');
+			$(td).text('0:30');
+		}
+	})
 }
 
 setInterval(countdown, 1000);
@@ -420,7 +444,7 @@ setInterval(countdown, 1000);
 
 						<div id="sideinfo-desc">
 							<p>Please select the company of the person you are looking for or search all companies.</p>
-							<img src="search-all-companies-selected.png" onclick="showPeoplePanel(null)">
+							<img src="search-all-companies-selected.png" onclick="showPeoplePanel(null)" id="searchallcompanies">
 						</div>
 					</div>
 
