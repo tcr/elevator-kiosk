@@ -222,6 +222,11 @@ companies.forEach(function (company) {
 })
 
 $(function () {
+	$('#companies').append('<p class="showallcomps" style="font-style: italic">Show all...</p>')
+	$('#companies p.showallcomps').on('click', function () {
+		showPeoplePanel(null);
+		$('#sideinfo').removeClass('start').addClass('companies');
+	});
 	companies.forEach(function (company) {
 		$('<p></p>').text(company.name).appendTo('#companies').on('click', function () {
 			showPeoplePanel(company);
@@ -276,6 +281,10 @@ function showPeoplePanel (company) {
 
 	//showPanel('panel-search', 'People who work at ' + company.name);
 	$('#items').html('');
+
+	// Company description
+	$('.sideinfo-block-company').toggle(!!company);
+	$('.sideinfo-block-all').toggle(!company);
 
 	$('#alphabet').toggle(doShowPeople);
 	if (doShowPeople) {
@@ -444,15 +453,19 @@ setInterval(countdown, 1000);
 
 						<div id="sideinfo-desc">
 							<p>Please select the company of the person you are looking for or search all companies.</p>
-							<img src="search-all-companies-selected.png" onclick="showPeoplePanel(null)" id="searchallcompanies">
 						</div>
 					</div>
 
 					<div class="sideinfo-block" id="sideinfo-block-companies" style="margin-top: 20px">
-						<img src="applelogo.png" width="100">
-						<p style="font-size: 36px; margin: 10px 0;">Apple</p>
-						<p style="color: #999; margin: 0;">(781) 333-8888<br>rogerstreet@apple.com<br><br>Located on floor 9.</p>
-						<div class="backbtn" onclick="showCompanyPanel(true, false)">All Companies</div>
+						<div class="sideinfo-block-company">
+							<img src="applelogo.png" width="100">
+							<p style="font-size: 36px; margin: 10px 0;">Apple</p>
+							<p style="color: #999; margin: 0;">(781) 333-8888<br>rogerstreet@apple.com<br><br>Located on floor 9.</p>
+						</div>
+						<div class="sideinfo-block-all">
+							<p>Showing listings from all companies.</p>
+						</div>
+						<div onclick="showCompanyPanel(false, null)" class="backbtn">All Companies</div>
 					</div>
 				</div>
 
