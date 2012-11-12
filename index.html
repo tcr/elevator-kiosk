@@ -136,6 +136,14 @@ if (!window.WebKitAnimationEvent) {
 	alert('Pleae use a WebKit based browser. We\'re sorry Mozilla :(')
 }
 
+$(function () {
+	$('body').on('dblclick', function (e) {
+		var txt = $(e.target).text();
+		var url = 'http://tts-api.com/tts.mp3?q=' + encodeURIComponent(txt);
+		new Audio(url).play();
+	})
+});
+
 /**
  * Panel Setup
  */
@@ -173,6 +181,7 @@ $(function () {
 		showLookingPanel();
 		$('#panel-find').removeClass('mode-person').removeClass('mode-room');
 	});
+	/*
 	$('#header-time').on('mousedown', function () {
 		var elem = $('body')[0];
 		if (elem.requestFullScreen) {
@@ -183,6 +192,7 @@ $(function () {
 		  elem.webkitRequestFullScreen();
 		}
 	});
+	*/
 })
 
 $(function () {
