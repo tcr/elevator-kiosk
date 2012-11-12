@@ -11,7 +11,7 @@ html, body { margin: 0; padding: 0;
 html, body { height: 100%; position: relative; background: black; color: white; }
 body { width: 1050px; margin: 0 auto; }
 
-#floorbuttons { width: 280px; height: 100%; position: absolute; left: 0; top: 70px; }
+#floorbuttons { width: 280px; position: absolute; left: 0; top: 70px; }
 #floorbuttons table { width: 250px; border-spacing: 8px; }
 #floorbuttons td { text-align: center; color: black; font-size: 20px; height: 40px; background: url(floor-button.png); padding-top: 5px; cursor: pointer; position: relative; }
 #floorbuttons td.active { background: url(floor-button-selected.png); color: #ddd; } 
@@ -132,6 +132,10 @@ function fitScreen () {
 $(window).on('resize', fitScreen);
 $(fitScreen);
 
+if (!window.WebKitAnimationEvent) {
+	alert('Pleae use a WebKit based browser. We\'re sorry Mozilla :(')
+}
+
 /**
  * Panel Setup
  */
@@ -149,13 +153,13 @@ function showPanel (id, header) {
 }
 
 $(function () {
-	$('#back-button')[0].onclick = function () {
+	$('#back-button')[0].onmousedown = function () {
 		backqueue.pop();
 		var last = backqueue.pop();
 		showPanel.apply(null, last);
 	};
 	/*
-	$('#done-button')[0].onclick = function () {
+	$('#done-button')[0].onmousedown = function () {
 		var args = backqueue[0];
 		backqueue = [];
 		showPanel.apply(null, args);
@@ -165,11 +169,11 @@ $(function () {
 })
 
 $(function () {
-	$('#header').on('click', function () {
+	$('#header').on('mousedown', function () {
 		showLookingPanel();
 		$('#panel-find').removeClass('mode-person').removeClass('mode-room');
 	});
-	$('#header-time').on('click', function () {
+	$('#header-time').on('mousedown', function () {
 		var elem = $('body')[0];
 		if (elem.requestFullScreen) {
 		  elem.requestFullScreen();
@@ -188,7 +192,7 @@ $(function () {
 	$('<tr><td><span>Lobby</span><b></b></td></tr>').appendTo('#floorbuttons table');
 	$('<tr><td><span>Garage A</span><b></b></td></tr>').appendTo('#floorbuttons table');
 	$('<tr><td><span>Garage B</span><b></b></td></tr>').appendTo('#floorbuttons table');
-	$('#floorbuttons td').on('click', function () {
+	$('#floorbuttons td').on('mousedown', function () {
 		if (!$(this).hasClass('active')) {
 			$(this).addClass('active');
 			$('b', this).text('0:30');
@@ -234,12 +238,12 @@ companies.forEach(function (company) {
 
 $(function () {
 	$('#companies').append('<p class="showallcomps" style="font-style: italic">Show all...</p>')
-	$('#companies p.showallcomps').on('click', function () {
+	$('#companies p.showallcomps').on('mousedown', function () {
 		showPeoplePanel(null);
 		$('#sideinfo').removeClass('start').addClass('companies');
 	});
 	companies.forEach(function (company) {
-		$('<p></p>').text(company.name).appendTo('#companies').on('click', function () {
+		$('<p></p>').text(company.name).appendTo('#companies').on('mousedown', function () {
 			showPeoplePanel(company);
 			$('#sideinfo').removeClass('start').addClass('companies');
 		})
@@ -308,14 +312,14 @@ function showPeoplePanel (company) {
 				lastletter = person.name[0];
 				$('<h5>').text(lastletter).appendTo('#items');
 			}
-			$('<p></p>').text(person.name).appendTo('#items').on('click', function () {
+			$('<p></p>').text(person.name).appendTo('#items').on('mousedown', function () {
 				showPersonPanel(person);
 			})
 		})
 		$('#search').focus();
 	} else {
 		mtgs.forEach(function (mtg) {
-			$('<p></p>').text(mtg).appendTo('#items').on('click', function () {
+			$('<p></p>').text(mtg).appendTo('#items').on('mousedown', function () {
 				showRoom(mtg);
 			})
 		});
@@ -325,7 +329,7 @@ function showPeoplePanel (company) {
 $(function () {
 	// generate alphabet
 	[].forEach.call("abcdefghijklmnopqrstuvwxyz".toUpperCase(), function (letter) {
-		$('<b>' + letter + '</b>').appendTo('#alphabet').on('click', function () {
+		$('<b>' + letter + '</b>').appendTo('#alphabet').on('mousedown', function () {
 			if ($(this).hasClass('selectedfilter')) {
 				$('#items p, #items h5').show();
 				return resetAlphabetFilter();
@@ -355,7 +359,7 @@ $(function () {
 
 	$('#search').on('keydown', function () {
 		setTimeout(textFilter);
-	}).on('click', textFilter);
+	}).on('mousedown', textFilter);
 });
 
 
@@ -459,8 +463,8 @@ setInterval(countdown, 1000);
 				<!--<h3>Find a person</h2>-->
 				<div id="sideinfo" class="start">
 					<div class="sideinfo-block" id="sideinfo-block-start">
-						<div id="button-findaperson" class="largebutton"><img src="find-person.png" width="335" onclick="showCompanyPanel(null, false)"></div>
-						<div id="button-findameeting" class="largebutton"><img src="findameeting.png" width="335" onclick="showCompanyPanel(false, null)"></div>
+						<div id="button-findaperson" class="largebutton"><img src="find-person.png" width="335" onmousedown="showCompanyPanel(null, false)"></div>
+						<div id="button-findameeting" class="largebutton"><img src="findameeting.png" width="335" onmousedown="showCompanyPanel(false, null)"></div>
 
 						<div id="sideinfo-desc">
 							<p>Please select the company of the person you are looking for or search all companies.</p>
@@ -476,16 +480,16 @@ setInterval(countdown, 1000);
 						<div class="sideinfo-block-all">
 							<p>Showing listings from all companies.</p>
 						</div>
-						<div onclick="showCompanyPanel(false, null)" class="backbtn">All Companies</div>
+						<div onmousedown="showCompanyPanel(false, null)" class="backbtn">All Companies</div>
 					</div>
 				</div>
 
-				<div id="poiheader"><span>Call Elevator for Popular Destination</span></div>
+				<div id="poiheader"><span>Call Elevator to Popular Destination</span></div>
 				<div id="poi">
-					<p onclick="elevatorCalled(5)"><img alt="Cafeteria" src="poi-cafeteria.png" width="250"></p>
-					<p onclick="elevatorCalled(6)"><img alt="Auditorium" src="poi-auditorium.png" width="250"></p>
-					<p onclick="elevatorCalled(7)"><img alt="Gym" src="poi-gym.png" width="250"></p>
-					<p onclick="elevatorCalled(8)"><img alt="Garage" src="poi-garage.png" width="250"></p>
+					<p onmousedown="elevatorCalled(5)"><img alt="Cafeteria" src="poi-cafeteria.png" width="250"></p>
+					<p onmousedown="elevatorCalled(6)"><img alt="Auditorium" src="poi-auditorium.png" width="250"></p>
+					<p onmousedown="elevatorCalled(7)"><img alt="Gym" src="poi-gym.png" width="250"></p>
+					<p onmousedown="elevatorCalled(8)"><img alt="Garage" src="poi-garage.png" width="250"></p>
 				</div>
 
 				<div id="companies">
@@ -514,7 +518,7 @@ setInterval(countdown, 1000);
 						(781) 393-5555
 					</pre>
 				  <div id="back-button" class="backbtn">Choose Again</div>
-					<div id="elevator-pullout" onclick="elevatorCalled(9)">
+					<div id="elevator-pullout" onmousedown="elevatorCalled(9)">
 						<span>9</span><br>
 						Call Elevator
 					</div>
