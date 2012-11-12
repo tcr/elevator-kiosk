@@ -121,6 +121,13 @@ line-height: 40px; padding-left: 6px; color: #999; cursor: pointer; }
 </style>
 <script>
 
+function fitScreen () {
+	$('body').css('zoom', $(window).height()/900*100 + '%'); 
+}
+
+$(window).on('resize', fitScreen);
+$(fitScreen);
+
 /**
  * Panel Setup
  */
@@ -469,7 +476,7 @@ setInterval(countdown, 1000);
 					</div>
 				</div>
 
-				<div id="poiheader"><span>Popular Destinations</span></div>
+				<div id="poiheader"><span>Call Elevator for Popular Destination</span></div>
 				<div id="poi">
 					<p onclick="elevatorCalled(5)"><img alt="Cafeteria" src="poi-cafeteria.png" width="250"></p>
 					<p onclick="elevatorCalled(6)"><img alt="Auditorium" src="poi-auditorium.png" width="250"></p>
