@@ -1,0 +1,114 @@
+html, body { margin: 0; padding: 0;
+	font-size: 18px; font-family: Helvetica Neue, Helvetica, Arial, sans-serif; }
+html, body { height: 100%; position: relative; background: black; color: white; }
+body { width: 1050px; margin: 0 auto; }
+
+#floorbuttons { width: 280px; position: absolute; left: 0; top: 70px; }
+#floorbuttons table { width: 250px; border-spacing: 8px; }
+#floorbuttons td { text-align: center; color: black; font-size: 20px; height: 40px; background: url(/images/floor-button.png); padding-top: 5px; cursor: pointer; position: relative; }
+#floorbuttons td.active { background: url(/images/floor-button-selected.png); color: #ddd; } 
+#floorbuttons td b { display: none; }
+#floorbuttons td.active b { display: block; position: absolute; right: 10px; top: 15px; font-weight: normal; font-size: 16px; }
+#floorbuttons td b::before { color: white; background: red; margin-right: 10px; content: "E"; padding: .2em .47em; font-size: 12px; font-weight: bold; vertical-align: middle; }
+
+#kiosk { width: 700px; height: 884px; position: relative; margin-left: 300px;  background: #363636; padding: 8px 25px; }
+
+h1 { margin: 0; font-size: 30px; padding: 10px 0; font-weight: normal; line-height: 1.0;}
+h1 small { color: #8f8f8f; }
+h2 { margin: 15px 0 0; font-weight: normal; font-size: 20px; letter-spacing: 0.05em; }
+h3 { text-transform: uppercase; color: #666; margin: 15px 15px 0; font-weight: normal; }
+
+.panel { overflow: auto; height: 700px; position: relative; }
+.section { overflow: auto; }
+
+.panel#panel-find{
+	overflow:hidden;
+}
+/* header */
+#header { position: relative; min-height: 3em; padding: 10px 0; }
+hr { clear: left; border: none; border-top: 1px solid #565656; opacity: 0.6; }
+#header-time { position: absolute; right: 10px; top: 5px; text-align: right; color: #8f8f8f; vertical-align: top; }
+#header-time span { color: #fff; vertical-align: middle; font-size: 1.05em; }
+#header-time sup { text-transform: uppercase; vertical-align: middle; font-size: 0.6em; padding: 0 0 0 5px;}
+
+/* navigation */
+#nav button { float: left; font-size: 19px; margin: 20px 30px 0 10px; }
+#nav #done-button { float: right; }
+
+/* panel find */
+.largebutton { text-align: center; margin: 30px 0 15px; cursor: pointer; }
+#sideinfo { -webkit-transition: width .5s; width: 700px; }
+#sideinfo-desc { width: 300px; }
+#sideinfo-desc, #companies, #poi { -webkit-transition: opacity .25s; }
+#sideinfo-desc, #companies { height: 0; overflow: hidden;  opacity: 0; }
+#poi { position: absolute; top: 420px; width: 680px; z-index: 100;}
+.mode-person #poi, .mode-room #poi  { opacity: 0; z-index: -5; }
+.mode-person #sideinfo-desc, .mode-room #sideinfo-desc,
+.mode-person #listings, .mode-room #listings,
+.mode-person #companies, .mode-room #companies { opacity: 1.0; overflow: visible; height: auto; }
+.mode-person #companies, .mode-room #companies, 
+.mode-person #listings, .mode-room #listings { height: 100%; overflow: auto; }
+.mode-person #sideinfo, .mode-room #sideinfo { width: 335px; position: absolute; top: 0; left: 0; }
+
+#sideinfo-block-start,
+#sideinfo-block-companies { -webkit-transition: height 0.5s; -webkit-transition: opacity 0.5s; z-index: 500;}
+#sideinfo.companies #sideinfo-block-start,
+#sideinfo.start #sideinfo-block-companies { height: 0; opacity: 0; z-index: -500; overflow: hidden; }
+
+#button-findaperson,
+#button-findameeting { background-size: 335px 146px; background-repeat: no-repeat; background-position: center center; -webkit-transition: background-image 0.25s; }
+#button-findaperson img,
+#button-findameeting img { opacity: 0; }
+#button-findaperson { background-image: url(/images/find-person.png); }
+.mode-person #button-findaperson { background-image: url(/images/find-person-selected.png); }
+#button-findameeting { background-image: url(/images/find-meetingroom.png); }
+.mode-room #button-findameeting { background-image: url(/images/find-meetingroom-selected.png); }
+
+#poi { -webkit-columns: 300px 2; padding: 10px 10px 0 10px;}
+#poi p { margin: 0; text-align: center; cursor: pointer; }
+#poi img { }
+
+/* panel companies */
+#companies, #listings { margin-left: 365px; width: 335px; opacity: 0; -webkit-transition: opacity 0.5s; }
+#companies p { border: solid #565656; border-width: 0 0 1px; margin: 0 0 0 0; padding: 15px 10px; cursor: pointer; }
+#companies p:hover { background: #555; }
+
+#find-meeting { width: 90%; margin: 0 auto; display: block; text-align: center; padding: 15px; font-size: 24px;  }
+#search { font-size:; 24px; padding: 5px 0; width: 500px; margin-left: 20px; }
+
+/* panel search people */
+#alphabet b { display: block; cursor: pointer; width: 1em; height: 20px; margin-top: -1px; background: #363636; padding: 3px 10px 4.8px; color: white; text-align: center;}
+#alphabet b:hover { color: #363636; background: white; }
+#alphabet { float: right; position: absolute; right: 0; }
+#items h5 { background: #222; margin: 0; padding: 5px; }
+#items p { border-bottom: 1px solid #565656; padding: 10px 15px; cursor: pointer; margin: 0; }
+#items p:hover { background: #555; }
+
+.selectedfilter { background: #888 !important; }
+
+#ledtrack1 { width: 30px; float: left; }
+
+#poiheader span { font-size: 20px; display: block; position: absolute; top: -5px; background: #363636; padding-right: 15px; letter-spacing: 0.1em;}
+#poiheader { border-bottom: 1px solid #565656; padding-top: 10px; position: relative; margin: 0 0; }
+.mode-person #poiheader, .mode-room #poiheader { display: none; }
+
+/* panel person*/
+#person-img { float: left; margin: 15px 25px 40px 15px; height: 300px; }
+#person-name { font-style: normal; font-size: 30px; margin: 1em 0 .5em; }
+#person-info { font: inherit; font-style: normal; color: #aaa; }
+#person-info-box { margin-left: 240px; }
+
+.panel.room #person-img { display: none; }
+
+#elevator-pullout { padding: 15px; font-size: 24px; display: inline-block; border-radius: 10px; border: 2px solid #555; padding: 10px 40px; text-align: center; cursor: pointer; font-style: normal; }
+#elevator-pullout span { display: inline-block; text-align: center; height: 40px; width: 40px; border-radius: 20px; background: #555; padding-top: 6px; box-sizing: border-box;}
+
+/* elevator called. */
+#panel-called h1 { text-align: center; margin: 20px 0; }
+#elevatorletter { width: 300px; height: 300px; background: red; color: white; font-family: Arial Black, Arial, sans-serif; line-height: 300px; text-align: center; font-size: 190px; margin: 30px auto;}
+
+#panel-img { background: #ccc; border: 2px solid #111; padding: 15px 0;}
+
+.backbtn { height: 40px; width: 150px; background-size: 150px 40px; background-image: url(/images/back-button-bg.png);
+background-position: center center; margin: 20px 0; display: block; text-align: center; background-repeat: no-repeat;
+line-height: 40px; padding-left: 6px; color: #999; cursor: pointer; }

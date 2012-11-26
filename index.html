@@ -3,451 +3,11 @@
 <html>
 <head>
 	<title>Building Navigator</title>
+
+<link href="unibros.css" rel="stylesheet">
 <script src="jquery.min.js"></script>
+<script src="unibros.js"></script>
 
-<style>
-html, body { margin: 0; padding: 0;
-	font-size: 18px; font-family: Helvetica Neue, Helvetica, Arial, sans-serif; }
-html, body { height: 100%; position: relative; background: black; color: white; }
-body { width: 1050px; margin: 0 auto; }
-
-#floorbuttons { width: 280px; position: absolute; left: 0; top: 70px; }
-#floorbuttons table { width: 250px; border-spacing: 8px; }
-#floorbuttons td { text-align: center; color: black; font-size: 20px; height: 40px; background: url(floor-button.png); padding-top: 5px; cursor: pointer; position: relative; }
-#floorbuttons td.active { background: url(floor-button-selected.png); color: #ddd; } 
-#floorbuttons td b { display: none; }
-#floorbuttons td.active b { display: block; position: absolute; right: 10px; top: 15px; font-weight: normal; font-size: 16px; }
-#floorbuttons td b::before { color: white; background: red; margin-right: 10px; content: "E"; padding: .2em .47em; font-size: 12px; font-weight: bold; vertical-align: middle; }
-
-#kiosk { width: 700px; height: 884px; position: relative; margin-left: 300px;  background: #363636; padding: 8px 25px; }
-
-h1 { margin: 0; font-size: 30px; padding: 10px 0; font-weight: normal; line-height: 1.0;}
-h1 small { color: #8f8f8f; }
-h2 { margin: 15px 0 0; font-weight: normal; font-size: 20px; letter-spacing: 0.05em; }
-h3 { text-transform: uppercase; color: #666; margin: 15px 15px 0; font-weight: normal; }
-
-.panel { overflow: auto; height: 700px; position: relative; }
-.section { overflow: auto; }
-
-.panel#panel-find{
-	overflow:hidden;
-}
-/* header */
-#header { position: relative; min-height: 3em; padding: 10px 0; }
-hr { clear: left; border: none; border-top: 1px solid #565656; opacity: 0.6; }
-#header-time { position: absolute; right: 10px; top: 5px; text-align: right; color: #8f8f8f; vertical-align: top; }
-#header-time span { color: #fff; vertical-align: middle; font-size: 1.05em; }
-#header-time sup { text-transform: uppercase; vertical-align: middle; font-size: 0.6em; padding: 0 0 0 5px;}
-
-/* navigation */
-#nav button { float: left; font-size: 19px; margin: 20px 30px 0 10px; }
-#nav #done-button { float: right; }
-
-/* panel find */
-.largebutton { text-align: center; margin: 30px 0 15px; cursor: pointer; }
-#sideinfo { -webkit-transition: width .5s; width: 700px; }
-#sideinfo-desc { width: 300px; }
-#sideinfo-desc, #companies, #poi { -webkit-transition: opacity .25s; }
-#sideinfo-desc, #companies { height: 0; overflow: hidden;  opacity: 0; }
-#poi { position: absolute; top: 420px; width: 680px; z-index: 100;}
-.mode-person #poi, .mode-room #poi  { opacity: 0; z-index: -5; }
-.mode-person #sideinfo-desc, .mode-room #sideinfo-desc,
-.mode-person #listings, .mode-room #listings,
-.mode-person #companies, .mode-room #companies { opacity: 1.0; overflow: visible; height: auto; }
-.mode-person #companies, .mode-room #companies, 
-.mode-person #listings, .mode-room #listings { height: 100%; overflow: auto; }
-.mode-person #sideinfo, .mode-room #sideinfo { width: 335px; position: absolute; top: 0; left: 0; }
-
-#sideinfo-block-start,
-#sideinfo-block-companies { -webkit-transition: height 0.5s; -webkit-transition: opacity 0.5s; z-index: 500;}
-#sideinfo.companies #sideinfo-block-start,
-#sideinfo.start #sideinfo-block-companies { height: 0; opacity: 0; z-index: -500; overflow: hidden; }
-
-#button-findaperson,
-#button-findameeting { background-size: 335px 146px; background-repeat: no-repeat; background-position: center center; -webkit-transition: background-image 0.25s; }
-#button-findaperson img,
-#button-findameeting img { opacity: 0; }
-#button-findaperson { background-image: url(find-person.png); }
-.mode-person #button-findaperson { background-image: url(find-person-selected.png); }
-#button-findameeting { background-image: url(find-meetingroom.png); }
-.mode-room #button-findameeting { background-image: url(find-meetingroom-selected.png); }
-
-#poi { -webkit-columns: 300px 2; padding: 10px 10px 0 10px;}
-#poi p { margin: 0; text-align: center; cursor: pointer; }
-#poi img { }
-
-/* panel companies */
-#companies, #listings { margin-left: 365px; width: 335px; opacity: 0; -webkit-transition: opacity 0.5s; }
-#companies p { border: solid #565656; border-width: 0 0 1px; margin: 0 0 0 0; padding: 15px 10px; cursor: pointer; }
-#companies p:hover { background: #555; }
-
-#find-meeting { width: 90%; margin: 0 auto; display: block; text-align: center; padding: 15px; font-size: 24px;  }
-#search { font-size:; 24px; padding: 5px 0; width: 500px; margin-left: 20px; }
-
-/* panel search people */
-#alphabet b { display: block; cursor: pointer; width: 1em; height: 20px; margin-top: -1px; background: #363636; padding: 3px 10px 4.8px; color: white; text-align: center;}
-#alphabet b:hover { color: #363636; background: white; }
-#alphabet { float: right; position: absolute; right: 0; }
-#items h5 { background: #222; margin: 0; padding: 5px; }
-#items p { border-bottom: 1px solid #565656; padding: 10px 15px; cursor: pointer; margin: 0; }
-#items p:hover { background: #555; }
-
-.selectedfilter { background: #888 !important; }
-
-#ledtrack1 { width: 30px; float: left; }
-
-#poiheader span { font-size: 20px; display: block; position: absolute; top: -5px; background: #363636; padding-right: 15px; letter-spacing: 0.1em;}
-#poiheader { border-bottom: 1px solid #565656; padding-top: 10px; position: relative; margin: 0 0; }
-.mode-person #poiheader, .mode-room #poiheader { display: none; }
-
-/* panel person*/
-#person-img { float: left; margin: 15px 25px 40px 15px; height: 300px; }
-#person-name { font-style: normal; font-size: 30px; margin: 1em 0 .5em; }
-#person-info { font: inherit; font-style: normal; color: #aaa; }
-#person-info-box { margin-left: 240px; }
-
-.panel.room #person-img { display: none; }
-
-#elevator-pullout { padding: 15px; font-size: 24px; display: inline-block; border-radius: 10px; border: 2px solid #555; padding: 10px 40px; text-align: center; cursor: pointer; font-style: normal; }
-#elevator-pullout span { display: inline-block; text-align: center; height: 40px; width: 40px; border-radius: 20px; background: #555; padding-top: 6px; box-sizing: border-box;}
-
-/* elevator called. */
-#panel-called h1 { text-align: center; margin: 20px 0; }
-#elevatorletter { width: 300px; height: 300px; background: red; color: white; font-family: Arial Black, Arial, sans-serif; line-height: 300px; text-align: center; font-size: 190px; margin: 30px auto;}
-
-#panel-img { background: #ccc; border: 2px solid #111; padding: 15px 0;}
-
-.backbtn { height: 40px; width: 150px; background-size: 150px 40px; background-image: url(back-button-bg.png);
-background-position: center center; margin: 20px 0; display: block; text-align: center; background-repeat: no-repeat;
-line-height: 40px; padding-left: 6px; color: #999; cursor: pointer; }
-
-
-</style>
-<script>
-
-function fitScreen () {
-	$('body').css('zoom', $(window).height()/900*100 + '%'); 
-}
-
-$(window).on('resize', fitScreen);
-$(fitScreen);
-
-if (!window.WebKitAnimationEvent) {
-	alert('Pleae use a WebKit based browser. We\'re sorry Mozilla :(')
-}
-
-$(function () {
-	$('body').on('dblclick', function (e) {
-		var txt = $(e.target).text();
-		var url = 'http://tts-api.com/tts.mp3?q=' + encodeURIComponent(txt);
-		new Audio(url).play();
-	})
-});
-
-/**
- * Panel Setup
- */
-
-var backqueue = [];
-
-function showPanel (id, header) {
-	backqueue.push(arguments);
-
-	$('.panel').hide();
-	$('#' + id).show();
-	
-	$('h2').text(header);
-	$('#back-button').toggle(id != 'panel-find');
-}
-
-$(function () {
-	$('#back-button')[0].onmousedown = function () {
-		backqueue.pop();
-		var last = backqueue.pop();
-		showPanel.apply(null, last);
-	};
-	/*
-	$('#done-button')[0].onmousedown = function () {
-		var args = backqueue[0];
-		backqueue = [];
-		showPanel.apply(null, args);
-	}
-	*/
-	showLookingPanel();
-})
-
-$(function () {
-	$('#header').on('mousedown', function () {
-		showLookingPanel();
-		$('#panel-find').removeClass('mode-person').removeClass('mode-room');
-	});
-	/*
-	$('#header-time').on('mousedown', function () {
-		var elem = $('body')[0];
-		if (elem.requestFullScreen) {
-		  elem.requestFullScreen();
-		} else if (elem.mozRequestFullScreen) {
-		  elem.mozRequestFullScreen();
-		} else if (elem.webkitRequestFullScreen) {
-		  elem.webkitRequestFullScreen();
-		}
-	});
-	*/
-})
-
-$(function () {
-	for (var i = 1; i < 12; i++) {
-		$('<tr><td><span>' + i + '</span><b></b></td></tr>').prependTo('#floorbuttons table');
-	}
-	$('<tr><td><span>Lobby</span><b></b></td></tr>').appendTo('#floorbuttons table');
-	$('<tr><td><span>Garage A</span><b></b></td></tr>').appendTo('#floorbuttons table');
-	$('<tr><td><span>Garage B</span><b></b></td></tr>').appendTo('#floorbuttons table');
-	$('#floorbuttons td').on('mousedown', function () {
-		if (!$(this).hasClass('active')) {
-			$(this).addClass('active');
-			$('b', this).text('0:30');
-		}
-	})
-});
-
-
-/**
- * What are you looking for?
- */
-
-function showLookingPanel () {
-	showPanel('panel-find', 'What are you looking for?');
-	$('#sideinfo').addClass('start').removeClass('companies');
-}
-
-/**
- * Companies
- */
-
-var companies = [
-	{name: 'Apple'},
-	{name: 'Adobe'},
-	{name: 'AMD'},
-	{name: 'Disney Interactive'},
-	{name: 'Dropbox'},
-	{name: 'IDEO'},
-	{name: 'Instagram'},
-	{name: 'JC Penny'},
-	{name: 'Jitter'},
-	{name: 'Kindle Books'},
-	{name: 'Luminair'},
-	{name: 'Mass Challenge'},
-	{name: 'Quora'},
-	{name: 'Twitter Labs'},
-	{name: 'Xerox'}
-];
-
-companies.forEach(function (company) {
-	company.domain = company.name.replace(/\s+/, '').toLowerCase() + '.com'
-})
-
-$(function () {
-	$('#companies').append('<p class="showallcomps" style="font-style: italic">Show all...</p>')
-	$('#companies p.showallcomps').on('mousedown', function () {
-		showPeoplePanel(null);
-		$('#sideinfo').removeClass('start').addClass('companies');
-	});
-	companies.forEach(function (company) {
-		$('<p></p>').text(company.name).appendTo('#companies').on('mousedown', function () {
-			showPeoplePanel(company);
-			$('#sideinfo').removeClass('start').addClass('companies');
-		})
-	})
-});
-
-function showCompanyPanel (modeperson, modecompany) {
-	//showPanel('panel-companies', 'What are you looking for?');
-	$('h2').text('Choose a company.');
-	$('#panel-find').toggleClass('mode-person', modeperson);
-	$('#panel-find').toggleClass('mode-room', modecompany);
-	$('#listings').hide(); $('#companies').show();
-	$('#sideinfo').addClass('start').removeClass('companies');
-}
-
-
-
-/**
- * People who work...
- */
-
-var people = names = ["Aaron Ruppe", "Abe Welliver", "Abram Rondeau", "Addie Maricle", "Adelina Steinfeldt", "Adell Tacker", "Afton Yarborough", "Aisha Aquino", "Akiko Hiltz", "Alanna Mcconico", "Albertina Weymouth", "Alecia Yopp", "Aleen Boyce", "Alejandrina Walborn", "Alfonzo Bigley", "Alica Obrien", "Allan Oglesby", "Alonso Carini", "Alton Lancon", "Alton Stalling", "America Wicker", "Amira Sobolik", "Andres Guzman", "Andrew Helms", "Angla Hug", "Annalee Richins", "Annelle Koonce", "Anton Herder", "Antonette Remmers", "Arnita Mccarty", "Ashley Merida", "Athena Dahmen", "Aubrey Sun", "Audie Alfieri", "Audry Hirata", "Aurea Corl", "Ayesha Mcwhorter", "Barry Coger", "Barton Fegan", "Becky Francisco", "Bennie Mello", "Bertie Marion", "Billye Sias", "Bob File", "Bob Normandin", "Bobbi Saeger", "Bobbye Swarey", "Bradford Lainez", "Bradly Vanburen", "Brianna Eargle", "Brice Gulick", "Bridget Mulkey", "Brigida Foraker", "Buster Christon", "Byron Corral", "Carl Balboa", "Carlota Steinbeck", "Carolin Sokol", "Chad Balmer", "Chanel Hawke", "Chang Lanasa", "Charles Gotto", "Chelsie Heron", "Chester Roark", "Cheyenne Morel", "Christoper Rhem", "Claudine Hughey", "Clemente Gosney", "Clementine Stogsdill", "Clifford Mcculley", "Clint Morlan", "Cole Tietz", "Coleman Marcin", "Collen Dewitt", "Conrad Brezinski", "Coralie Scianna", "Cordie Peter", "Corey Sprau", "Corine Mckeller", "Corrie Mcbroom", "Corrinne Reda", "Criselda Duong", "Dale Chumbley", "Danette Ranney", "Daron Barbagallo", "Dean Gallagher", "Deangelo Penson", "Debbi Patino", "Delfina Twining", "Delma Hackett", "Demetrius Loughlin", "Deon Keffer", "Desmond Forshee", "Dewey Messmer", "Diane Hagen", "Dodie Mendieta", "Donn Tipler", "Donte Provenza", "Doreatha Conte", "Dorethea Everton", "Dorthey Umberger", "Dreama Halfacre", "Dwight Lock", "Dylan Glasser", "Eddy Conry", "Edmond Steuck", "Edmundo Sturdevant", "Efren Pratte", "Eileen Bacher", "Ellis Lovings", "Eloise Renaud", "Elroy Amundsen", "Emanuel Digby", "Emerson Lavin", "Emmaline Fredericksen", "Emmett Burchett", "Eric Hoop", "Eric Perl", "Ernie Gartner", "Esmeralda Spitler", "Evelia Ransom", "Everett Cortright", "Evon Furtado", "Ezekiel Whittle", "Fausto Escalona", "Ferdinand Wicks", "Ferdinand Widner", "Fermin Mickelsen", "Fidela Bellows", "Filiberto Tony", "Florentino Stewart", "Francesco Behling", "Francie Strobl", "Freddie Ham", "Frieda Crossman", "Frieda Hartman", "Fumiko Cooks", "Gabriel Isbell", "Garrett Radel", "Garth Agosta", "Gary Petrus", "Gavin Biddy", "Gayle Forsberg", "Gene Remick", "Geraldo Toussaint", "Gerda Mauck", "Gilda Sapien", "Gino Stockdale", "Giuseppe Amend", "Glen Defazio", "Glory Minogue", "Greg Murdock", "Hannah Pratt", "Hans Hartl", "Harley Flavors", "Hedwig Kaylor", "Heriberto Law", "Herta Fanning", "Honey Chmiel", "Hong Krings", "Horace Tupper", "Hosea Gaddis", "Houston Mogan", "Howard Hemond", "Ian Dockins", "Ilona Kettner", "Ilona Mcswain", "India Frasure", "Inge Villano", "Irena Mcginley", "Irish Tijerina", "Isreal Herford", "Issac Borda", "Jack Pagano", "Jade Crandle", "Jaime Hadsell", "Jalisa Avendano", "Janina Sumlin", "Jared Groner", "Jarrett Beckerman", "Jarrod Hardaway", "Jarvis Hiles", "Jason Bieniek", "Jason Laiche", "Jason Tomaselli", "Jayson Hollingsworth", "Jeanine Curiel", "Jeff Mandez", "Jefferson Cerrone", "Jeffery Davey", "Jerald Marcotte", "Jere Mccleery", "Jermaine Dilbeck", "Jermaine Vasser", "Jerold Irey", "Jerry Herdon", "Jesusa Dyck", "Jona Talbert", "Josh Donelan", "Juan Croteau", "Julius Trost", "Karen Liang", "Karima Viramontes", "Karly Haffner", "Kati Poeppelman", "Kiana Tuff", "Kimberly Ong", "Kirby Ellerbee", "Kirby Sanderson", "Kirk Mailman", "Korey Westberg", "Kristopher Blanton", "Kurt Severance", "Kyla Mor", "Lakesha Sitsler", "Lang Rosenberry", "Lanny Gardener", "Larisa Noon", "Latoyia Oxley", "Laura Gutter", "Lauralee Karl", "Lauretta Focht", "Lea Peredo", "Leatrice Waag", "Leland Saladin", "Leona Rosell", "Lera Sipos", "Lewis Hymel", "Lilia Eakes", "Lionel Harrison", "Lloyd Rossell", "Lon Wimbush", "Loraine Bona", "Loreen Paulding", "Lorraine Dejarnette", "Louie Petrarca", "Loyd Simoneaux", "Luisa Kitchell", "Lulu Outten", "Lurlene Tam", "Lyndsay Plantz", "Madalene Augustus", "Malcolm Gurrola", "Malik Kirschner", "Malik Woodrow", "Man Frederick", "Many Beverlin", "Marco Hosier", "Margarete Stull", "Margot Buckles", "Maria Southwell", "Maria Spataro", "Marquis Miro", "Marybelle Trombetta", "Maxie Kirkman", "Maya Junious", "Meaghan Deaner", "Michale Mcglinchey", "Michell Leader", "Michelle Laughter", "Milda Batton", "Moshe Willmore", "Murray Witherite", "Myles Cutsforth", "Na Hentz", "Napoleon Overcash", "Narcisa Crossno", "Natashia Covington", "Nathanial Melody", "Nathanial Pauline", "Nathaniel Smeltzer", "Ned Skalski", "Nena Bardsley", "Nenita Mccaw", "Nevada Soper", "Nicki Thibodaux", "Nikole Guinyard", "Nolan Adkison", "Numbers Kopecky", "Octavia Connelly", "Odell Hirano", "Olimpia Tozier", "Orlando Newlon", "Otis Feldt", "Otto Brazell", "Owen Schuller", "Palmer Schwandt", "Pam Basilio", "Pam Gabler", "Pamela Zych", "Patria Zalenski", "Patti Profit", "Paulina Quarles", "Percy Lincoln", "Perry Im", "Philip Leboeuf", "Porter Utley", "Preston Morones", "Quentin Feucht", "Racquel Klapper", "Rafael Daluz", "Rafael Flaugher", "Ramiro Angeles", "Randy Lao", "Ranee Hsieh", "Rashad Rowlands", "Rashida Kabel", "Rea Kemmer", "Reagan Martell", "Reginia Theus", "Rey Straight", "Rickey Kerley", "Ricki Rohman", "Ricki Steere", "Ricky Fowkes", "Rico Lofton", "Rocco Jessee", "Rocio Wardle", "Rodrick Evanoff", "Rogelio Maule", "Rolland Macky", "Rosalyn Melugin", "Rosaria Coen", "Rosaria Sidhu", "Roscoe Ogg", "Roxy Newnam", "Rufus Cardinale", "Russell Huckaby", "Samuel Linck", "Sandy Maurer", "Santo Escalera", "Sarai Cameron", "Scot Orloff", "Scott Aguila", "Sean Pardo", "Season Clairmont", "Shad Sievert", "Shakia Lukasiewicz", "Shakia Steeves", "Shala Loy", "Shanae Machen", "Sharen Remley", "Shay Brackins", "Shelby Hamann", "Sherley Mathes", "Sherrell Janelle", "Simon Veal", "Somer Withrow", "Sondra Blackmer", "Soo Faber", "Spencer Ratcliff", "Stanton Scheidler", "Stephan Rigsby", "Sunni Alongi", "Susan Stpierre", "Tabatha Zale", "Tammera Stokely", "Tasia Kreamer", "Taylor Marmolejo", "Teodoro Marrinan", "Terrell Corbo", "Terrie Strey", "Terry Arviso", "Tessie Bills", "Theda Arnone", "Theresa Fett", "Thersa Pilling", "Tien Stripling", "Timmy Yeh", "Tod Sweatman", "Tommy Ahlgren", "Toney Rinke", "Tory Coomes", "Trevor Mau", "Tristan Dower", "Vada Sessoms", "Val Bozell", "Velia Stansberry", "Victor Pou", "Victor Scheetz", "Vikki Orozco", "Vincenzo Gertz", "Walker Lepine", "Ward Bardwell", "Ward Gingerich", "Warner Kenney", "Wayne Raap", "Wesley Prentiss", "Weston Champ", "Will Monte", "Woodrow Hsieh", "Wynell Kamm", "Xenia Shriner", "Xiomara Goodwill", "Yolonda Schiel", "Young Kasel", "Zora Schoch"];
-
-people = people.map(function (name, i) {
-	return {
-		name: name,
-		phone: Math.floor(Math.random()*10000000000),
-		email: name.toLowerCase().replace(/\s+/, '.').replace(/[^a-zA-Z\.]/, '') + '@' + companies[i % companies.length].domain,
-		company: companies[i % companies.length].name
-	};
-})
-
-function resetAlphabetFilter() {
-	$('#alphabet b').removeClass('selectedfilter');
-}
-
-var mtgs = ['Meeting Room 100', 'Meeting Room 101', 'Meeting Room 102'];
-
-
-var showAll = false;
-
-function showPeoplePanel (company) {
-	if (!company) {
-		showAll = true;
-	}
-	var doShowPeople = $('#panel-find').hasClass('mode-person');
-
-	$('h2').text('-').html('&nbsp; ');
-	$('#listings').show(); $('#companies').hide();
-
-	//showPanel('panel-search', 'People who work at ' + company.name);
-	$('#items').html('');
-
-	// Company description
-	$('.sideinfo-block-company').toggle(!!company);
-	$('.sideinfo-block-all').toggle(!company);
-
-	$('#alphabet').toggle(doShowPeople);
-	if (doShowPeople) {
-		resetAlphabetFilter();
-		var lastletter = '';
-		people.filter(function (person) {
-			return !company || person.company == company.name;
-		}).forEach(function (person) {
-			if (person.name.charAt(0) != lastletter) {
-				lastletter = person.name[0];
-				$('<h5>').text(lastletter).appendTo('#items');
-			}
-			$('<p></p>').text(person.name).appendTo('#items').on('mousedown', function () {
-				showPersonPanel(person);
-			})
-		})
-		$('#search').focus();
-	} else {
-		mtgs.forEach(function (mtg) {
-			$('<p></p>').text(mtg).appendTo('#items').on('mousedown', function () {
-				showRoom(mtg);
-			})
-		});
-	}
-}
-
-$(function () {
-	// generate alphabet
-	[].forEach.call("abcdefghijklmnopqrstuvwxyz".toUpperCase(), function (letter) {
-		$('<b>' + letter + '</b>').appendTo('#alphabet').on('mousedown', function () {
-			if ($(this).hasClass('selectedfilter')) {
-				$('#items p, #items h5').show();
-				return resetAlphabetFilter();
-			}
-			resetAlphabetFilter();
-			$('#items h5').hide();
-			$('#items p').each(function (i, p) {
-				$(p).toggle($(p).text().toLowerCase().charAt(0) == letter.toLowerCase())
-			});
-			$(this).addClass('selectedfilter');
-			console.log(this, this.className);
-		})
-	});
-
-	function textFilter() {
-		resetAlphabetFilter();
-		var s = $('#search').val();
-		$('#items h5').toggle(!s);
-		$('#items p').each(function (i, p) {
-			if (!s) {
-				$(p).show();
-			} else {
-				$(p).toggle($(p).text().toLowerCase().indexOf(s) != -1)
-			}
-		})
-	}
-
-	$('#search').on('keydown', function () {
-		setTimeout(textFilter);
-	}).on('mousedown', textFilter);
-});
-
-
-
-/**
- * Individual Person
- */
-
-function showPersonPanel (person) {
-	showPanel('panel-person', '');
-	$('#panel-person').removeClass('room').addClass('human');
-	//$('#person-name').text(person.name);
-	var phoneNumber = '(' + String(person.phone).substr(0, 3) + ') ' + String(person.phone).substr(3, 3) + '-' + String(person.phone).substr(6)
-	$('#person-name').text(person.name);
-	$('#person-info').text('Employee at ' + person.company + '\n' +
-		phoneNumber + '\n' +
-		person.email);
-	$('#person-img')
-		//.attr('src', 'http://placekitten.com/' + Math.round(200 + Math.random() * 10) + '/' + Math.round(150 + Math.random() * 10))
-		.css({width: 200 + 'px', height: 300 + 'px'})
-}
-
-function showRoom (name) {
-	showPanel('panel-person', '');
-	$('#panel-person').addClass('room').removeClass('human');
-	$('#person-name').text(name);
-	$('#person-info').text('Currently Occupied');
-}
-
-function elevatorCalled (floor) {
-	$('#elevatorcalledtext').text('Your elevator to floor ' + floor + ' has been called.');
-	$('#floorbuttons td').each(function (i, td) {
-		if ($('span', td).text() == floor) {
-			$(td).addClass('active');
-		}
-	})
-	showPanel('panel-called', '');
-	$('#countdown').text('30 seconds');
-}
-
-
-/**
- * Clock
- */
-
-var tswitch = false;
-function updateClock() {
-	tswitch = !tswitch;
-	var hours = (new Date().getHours() + 23) % 12 + 1;
-	$('#header-time a').text((new Date().getMonth() + 1) + '/' + new Date().getDate() + '/' + String(new Date().getFullYear()).substr(-2));
-	$('#header-time span').text(hours + (tswitch ? ':' : ' ') + ('00' + new Date().getMinutes()).substr(-2));
-	$('#header-time sup').text(new Date().getHours() < 12 ? 'am' : 'pm')
-};
-setInterval(updateClock, 1000)
-$(updateClock);
-
-function countdown() {
-	var txt = parseInt($('#countdown').text());
-	if (txt) {
-		$('#countdown').text(txt - 1 + ' seconds');
-	} else {
-		$('#countdown').text('Your elevator has arrived.');
-	}
-
-	$('#floorbuttons td.active b').each(function (i, td) {
-		var sec = Number($(td).text().substr(2)) - 1;
-		if (sec) {
-			$(td).text('0:' + ('00' + sec).substr(-2));
-		} else {
-			$(td).parent('td').removeClass('active');
-			$(td).text('0:30');
-		}
-	})
-}
-
-setInterval(countdown, 1000);
-
-</script>
 <body>
 
 	<div id="floorbuttons">
@@ -463,18 +23,16 @@ setInterval(countdown, 1000);
 		</div>
 
 		<div id="nav" class="section">
-			<!--<button id="done-button">I'm Finished</button>-->
 			<h2>Michael Dolphin</h2>
 		</div>
 
 		<div id="panels" class="section">
 
 			<div id="panel-find" class="panel">
-				<!--<h3>Find a person</h2>-->
 				<div id="sideinfo" class="start">
 					<div class="sideinfo-block" id="sideinfo-block-start">
-						<div id="button-findaperson" class="largebutton"><img src="find-person.png" width="335" onmousedown="showCompanyPanel(null, false)"></div>
-						<div id="button-findameeting" class="largebutton"><img src="findameeting.png" width="335" onmousedown="showCompanyPanel(false, null)"></div>
+						<div id="button-findaperson" class="largebutton"><img src="/images/find-person.png" width="335" onmousedown="showCompanyPanel(null, false)"></div>
+						<div id="button-findameeting" class="largebutton"><img src="/images/findameeting.png" width="335" onmousedown="showCompanyPanel(false, null)"></div>
 
 						<div id="sideinfo-desc">
 							<p>Please select the company of the person you are looking for or search all companies.</p>
@@ -483,7 +41,7 @@ setInterval(countdown, 1000);
 
 					<div class="sideinfo-block" id="sideinfo-block-companies" style="margin-top: 20px">
 						<div class="sideinfo-block-company">
-							<img src="applelogo.png" width="100">
+							<img src="/images/applelogo.png" width="100">
 							<p style="font-size: 36px; margin: 10px 0;">Apple</p>
 							<p style="color: #999; margin: 0;">(781) 333-8888<br>rogerstreet@apple.com<br><br>Located on floor 9.</p>
 						</div>
@@ -496,10 +54,10 @@ setInterval(countdown, 1000);
 
 				<div id="poiheader"><span>Call Elevator to Popular Destination</span></div>
 				<div id="poi">
-					<p onmousedown="elevatorCalled(5)"><img alt="Cafeteria" src="poi-cafeteria.png" width="250"></p>
-					<p onmousedown="elevatorCalled(6)"><img alt="Auditorium" src="poi-auditorium.png" width="250"></p>
-					<p onmousedown="elevatorCalled(7)"><img alt="Gym" src="poi-gym.png" width="250"></p>
-					<p onmousedown="elevatorCalled(8)"><img alt="Garage" src="poi-garage.png" width="250"></p>
+					<p onmousedown="elevatorCalled(5)"><img alt="Cafeteria" src="/images/poi-cafeteria.png" width="250"></p>
+					<p onmousedown="elevatorCalled(6)"><img alt="Auditorium" src="/images/poi-auditorium.png" width="250"></p>
+					<p onmousedown="elevatorCalled(7)"><img alt="Gym" src="/images/poi-gym.png" width="250"></p>
+					<p onmousedown="elevatorCalled(8)"><img alt="Garage" src="/images/poi-garage.png" width="250"></p>
 				</div>
 
 				<div id="companies">
@@ -512,14 +70,9 @@ setInterval(countdown, 1000);
 				</div>
 			</div>
 
-			<!--
-			<div id="panel-search" class="panel">
-				<input type="text" id="search" placeholder="Search for a name...">
-			</div>
-		-->
 
 			<div id="panel-person" class="panel room">
-				<img id="person-img" src="businesswoman.png">
+				<img id="person-img" src="/images/businesswoman.png">
 				<div id="person-info-box">
 					<h2 id="person-name"></h2>
 					<pre id="person-info">
@@ -539,7 +92,7 @@ setInterval(countdown, 1000);
 				<div id="elevatorinfo">
 					<br>
 					<div id="panel-img" style="text-align: center">
-						<img width= "680" src="office_floorplan.png">
+						<img width= "680" src="/images/office_floorplan.png">
 					</div>
 				</div>
 			</div>
