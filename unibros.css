@@ -5,8 +5,8 @@ body { width: 1050px; margin: 0 auto; }
 
 #floorbuttons { width: 280px; position: absolute; left: 0; top: 70px; }
 #floorbuttons table { width: 250px; border-spacing: 8px; }
-#floorbuttons td { text-align: center; color: black; font-size: 20px; height: 40px; background: url(/images/floor-button.png); padding-top: 5px; cursor: pointer; position: relative; }
-#floorbuttons td.active { background: url(/images/floor-button-selected.png); color: #ddd; } 
+#floorbuttons td { text-align: center; color: black; font-size: 20px; height: 40px; background: url(images/floor-button.png); padding-top: 5px; cursor: pointer; position: relative; }
+#floorbuttons td.active { background: url(images/floor-button-selected.png); color: #ddd; } 
 #floorbuttons td b { display: none; }
 #floorbuttons td.active b { display: block; position: absolute; right: 10px; top: 15px; font-weight: normal; font-size: 16px; }
 #floorbuttons td b::before { color: white; background: red; margin-right: 10px; content: "E"; padding: .2em .47em; font-size: 12px; font-weight: bold; vertical-align: middle; }
@@ -59,10 +59,10 @@ hr { clear: left; border: none; border-top: 1px solid #565656; opacity: 0.6; }
 #button-findameeting { background-size: 335px 146px; background-repeat: no-repeat; background-position: center center; -webkit-transition: background-image 0.25s; }
 #button-findaperson img,
 #button-findameeting img { opacity: 0; }
-#button-findaperson { background-image: url(/images/find-person.png); }
-.mode-person #button-findaperson { background-image: url(/images/find-person-selected.png); }
-#button-findameeting { background-image: url(/images/find-meetingroom.png); }
-.mode-room #button-findameeting { background-image: url(/images/find-meetingroom-selected.png); }
+#button-findaperson { background-image: url(images/find-person.png); }
+.mode-person #button-findaperson { background-image: url(images/find-person-selected.png); }
+#button-findameeting { background-image: url(images/find-meetingroom.png); }
+.mode-room #button-findameeting { background-image: url(images/find-meetingroom-selected.png); }
 
 #poi { -webkit-columns: 300px 2; padding: 10px 10px 0 10px;}
 #poi p { margin: 0; text-align: center; cursor: pointer; }
@@ -109,6 +109,6 @@ hr { clear: left; border: none; border-top: 1px solid #565656; opacity: 0.6; }
 
 #panel-img { background: #ccc; border: 2px solid #111; padding: 15px 0;}
 
-.backbtn { height: 40px; width: 150px; background-size: 150px 40px; background-image: url(/images/back-button-bg.png);
+.backbtn { height: 40px; width: 150px; background-size: 150px 40px; background-image: url(images/back-button-bg.png);
 background-position: center center; margin: 20px 0; display: block; text-align: center; background-repeat: no-repeat;
 line-height: 40px; padding-left: 6px; color: #999; cursor: pointer; }
