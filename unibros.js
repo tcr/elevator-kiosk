@@ -108,7 +108,8 @@ var people = names = ["Aaron Ruppe", "Abe Welliver", "Abram Rondeau", "Addie Mar
 			name: name,
 			phone: Math.floor(Math.random()*10000000000),
 			email: name.toLowerCase().replace(/\s+/, '.').replace(/[^a-zA-Z\.]/, '') + '@' + companies[i % companies.length].domain,
-			company: companies[i % companies.length].name
+			company: companies[i % companies.length].name,
+			image: (i%2 == 0 ? 'images/males/' + i%80 + '.jpg':'images/females/' + i%50 + '.jpg')
 		};
 	});
 
@@ -164,8 +165,8 @@ function generateFloorButtons () {
 $(function () {
 	// Attach connection to back-button.
 	$('#back-button')[0].onmousedown = function () {
-		backqueue.pop();
-		var last = backqueue.pop();
+		_backqueue.pop();
+		var last = _backqueue.pop();
 		showPanel.apply(null, last);
 	};
 });
@@ -309,7 +310,8 @@ function showPersonPanel (person) {
 	$('#person-info').text('Employee at ' + person.company + '\n' +
 		phoneNumber + '\n' +
 		person.email);
-	$('#person-img').css({width: 200 + 'px', height: 300 + 'px'})
+	$('#person-img').css({width: 226 + 'px', height: 300 + 'px'});
+	$('#person-img').attr("src",person.image );
 }
 
 
