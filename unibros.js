@@ -108,7 +108,8 @@ var people = names = ["Aaron Ruppe", "Abe Welliver", "Abram Rondeau", "Addie Mar
 			name: name,
 			phone: Math.floor(Math.random()*10000000000),
 			email: name.toLowerCase().replace(/\s+/, '.').replace(/[^a-zA-Z\.]/, '') + '@' + companies[i % companies.length].domain,
-			company: companies[i % companies.length].name
+			company: companies[i % companies.length].name,
+      floor: Math.floor(Math.random() * 10) + 1
 		};
 	});
 
@@ -192,12 +193,12 @@ function restartPanel () {
 function createCompanyList () {
 	$('#companies').append('<p class="showallcomps" style="font-style: italic">Show all...</p>')
 	$('#companies p.showallcomps').on('mousedown', function () {
-		showPeoplePanel(null);
+		showPeopleOrMeetingsPanel(null);
 		$('#sideinfo').removeClass('start').addClass('companies');
 	});
 	companies.forEach(function (company) {
 		$('<p></p>').text(company.name).appendTo('#companies').on('mousedown', function () {
-			showPeoplePanel(company);
+			showPeopleOrMeetingsPanel(company);
 			$('#sideinfo').removeClass('start').addClass('companies');
 		})
 	});
@@ -222,7 +223,7 @@ function resetAlphabetFilter() {
 }
 
 var showAll = false;
-function showPeoplePanel (company) {
+function showPeopleOrMeetingsPanel (company) {
 	if (!company) {
 		showAll = true;
 	}
@@ -253,12 +254,20 @@ function showPeoplePanel (company) {
 			})
 		})
 		$('#search').focus();
+
+    $('#personCompanyBackBtn')[0].onmousedown = function () {
+      showCompanyPanel(true, false);
+    };
 	} else {
 		mtgs.forEach(function (mtg) {
 			$('<p></p>').text(mtg).appendTo('#items').on('mousedown', function () {
 				showRoomPanel(mtg);
 			})
 		});
+
+    $('#personCompanyBackBtn')[0].onmousedown = function () {
+      showCompanyPanel(false, true);
+    };
 	}
 }
 
@@ -300,17 +309,26 @@ function textFilter() {
  * Individual Person
  */
 
+var currentPerson = null;
 function showPersonPanel (person) {
+  currentPerson = person;
 	showPanel('panel-person', '');
 	$('#panel-person').removeClass('room').addClass('human');
-	//$('#person-name').text(person.name);
+
 	var phoneNumber = '(' + String(person.phone).substr(0, 3) + ') ' + String(person.phone).substr(3, 3) + '-' + String(person.phone).substr(6)
 	$('#person-name').text(person.name);
 	$('#person-info').text('Employee at ' + person.company + '\n' +
 		phoneNumber + '\n' +
 		person.email);
 	$('#person-img').css({width: 200 + 'px', height: 300 + 'px'})
+  $('#elevator-pullout span').text(person.floor);
 }
+
+$(function () {
+  $('#elevator-pullout').on('click', function () {
+    elevatorCalledPanel(currentPerson.floor, currentPerson.name);
+  });
+});
 
 
 /**
@@ -339,8 +357,8 @@ function timeoutUsage () {
 	}, 1000 * INTERFACE_TIMEOUT);
 }
 
-function elevatorCalledPanel (floor) {
-	$('#elevatorcalledtext').text('Your elevator to floor ' + floor + ' has been called.');
+function elevatorCalledPanel (floor, text) {
+	$('#elevatorcalledtext').text((text || '') + ' is on floor ' + floor + '. Your elevator to floor ' + floor + ' has been called.');
 	$('#floorbuttons td').each(function (i, td) {
 		if ($('span', td).text() == floor) {
 			$(td).addClass('active');
