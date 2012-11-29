@@ -12,21 +12,21 @@ if (!window.WebKitAnimationEvent) {
  */
 
 var companies = [
-	{name: 'Apple'},
-	{name: 'Adobe'},
-	{name: 'AMD'},
-	{name: 'Disney Interactive'},
-	{name: 'Dropbox'},
-	{name: 'IDEO'},
-	{name: 'Instagram'},
-	{name: 'JC Penny'},
-	{name: 'Jitter'},
-	{name: 'Kindle Books'},
-	{name: 'Luminair'},
-	{name: 'Mass Challenge'},
-	{name: 'Quora'},
-	{name: 'Twitter Labs'},
-	{name: 'Xerox'}
+	{name: 'Apple', image: 'images/companies/applelogo.png'},
+	{name: 'Adobe', image: 'images/companies/applelogo.png'},
+	{name: 'AMD', image: 'images/companies/applelogo.png'},
+	{name: 'Disney Interactive', image: 'images/companies/applelogo.png'},
+	{name: 'Dropbox', image: 'images/companies/applelogo.png'},
+	{name: 'IDEO', image: 'images/companies/applelogo.png'},
+	{name: 'Instagram', image: 'images/companies/applelogo.png'},
+	{name: 'JC Penny', image: 'images/companies/applelogo.png'},
+	{name: 'Jitter', image: 'images/companies/applelogo.png'},
+	{name: 'Kindle Books', image: 'images/companies/applelogo.png'},
+	{name: 'Luminair', image: 'images/companies/applelogo.png'},
+	{name: 'Mass Challenge', image: 'images/companies/applelogo.png'},
+	{name: 'Quora', image: 'images/companies/applelogo.png'},
+	{name: 'Twitter Labs', image: 'images/companies/applelogo.png'},
+	{name: 'Xerox', image: 'images/companies/applelogo.png'}
 ].map(function (company) {
 	company.domain = company.name.replace(/\s+/, '').toLowerCase() + '.com'
 	return company;
@@ -137,6 +137,7 @@ var _backqueue = [];
 
 // Show a panel and with the header text.
 function showPanel (id, header) {
+  console.log(id, header);
 	_backqueue.push(arguments);
 
 	$('.panel').hide();
@@ -211,6 +212,7 @@ function showCompanyPanel (modeperson, modecompany) {
 	$('#panel-find').toggleClass('mode-room', modecompany);
 	$('#listings').hide(); $('#companies').show();
 	$('#sideinfo').addClass('start').removeClass('companies');
+  $('#back-button').show();
 }
 
 
@@ -238,6 +240,9 @@ function showPeopleOrMeetingsPanel (company) {
 	// Company description
 	$('.sideinfo-block-company').toggle(!!company);
 	$('.sideinfo-block-all').toggle(!company);
+  if (company) {
+    $('.sideinfo-block-company img').attr('src', company.image);
+  }
 
 	$('#alphabet').toggle(doShowPeople);
 	if (doShowPeople) {
@@ -256,7 +261,7 @@ function showPeopleOrMeetingsPanel (company) {
 		})
 		$('#search').focus();
 
-    $('#personCompanyBackBtn')[0].onmousedown = function () {
+    $('#back-button')[0].onmousedown = function () {
       showCompanyPanel(true, false);
     };
 	} else {
@@ -266,7 +271,7 @@ function showPeopleOrMeetingsPanel (company) {
 			})
 		});
 
-    $('#personCompanyBackBtn')[0].onmousedown = function () {
+    $('#back-button')[0].onmousedown = function () {
       showCompanyPanel(false, true);
     };
 	}
