@@ -167,7 +167,7 @@ function generateFloorButtons () {
 function showLookingPanel () {
 	showPanel('panel-find', 'What are you looking for?');
 	$('#sideinfo').addClass('start').removeClass('companies');
-  $('#back-button').hide();
+  $('#back-button').hide().text('Choose Again');
 }
 
 function restartPanel () {
@@ -219,7 +219,7 @@ function showPeopleOrMeetingsPanel (company) {
 	}
 	var doShowPeople = $('#panel-find').hasClass('mode-person');
 
-	$('h2').text('-').html('&nbsp; ');
+	$('h2').text('-').html(' ');
 	$('#listings').show(); $('#companies').hide();
 
 	$('#items').html('');
@@ -319,6 +319,7 @@ function showPersonPanel (company, person) {
   $('#elevator-pullout span').text(person.floor);
 
   $('#back-button')[0].onmousedown = function () {
+    showPanel('panel-find', '');
     showPeopleOrMeetingsPanel(company);
   };
 }
@@ -355,7 +356,7 @@ function timeoutUsage () {
 	setTimeout(function () {
 		// Only timeout if the elevator called panel is visible.
 		if ($('#panel-called').is(':visible')) {
-			resetPanel();
+			restartPanel();
 		}
 	}, 1000 * INTERFACE_TIMEOUT);
 }
@@ -372,6 +373,11 @@ function elevatorCalledPanel (floor, text) {
 	});
 	showPanel('panel-called', '');
 	$('#countdown').text('30 seconds');
+
+  $('#back-button')[0].onmousedown = function () {
+    restartPanel();
+  };
+  $('#back-button').text('I\'m Finished')
 
 	// Interface timeout.
 	timeoutUsage();
