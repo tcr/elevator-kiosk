@@ -132,19 +132,14 @@ $(fitScreen);
  * Panel Setup
  */
 
-// Store previous panel state.
-var _backqueue = [];
-
 // Show a panel and with the header text.
 function showPanel (id, header) {
   console.log(id, header);
-	_backqueue.push(arguments);
 
 	$('.panel').hide();
 	$('#' + id).show();
 	
 	$('h2').text(header);
-	$('#back-button').toggle(id != 'panel-find');
 }
 
 function generateFloorButtons () {
@@ -164,15 +159,6 @@ function generateFloorButtons () {
 
 }
 
-$(function () {
-	// Attach connection to back-button.
-	$('#back-button')[0].onmousedown = function () {
-		_backqueue.pop();
-		var last = _backqueue.pop();
-		showPanel.apply(null, last);
-	};
-});
-
 
 /**
  * What are you looking for?
@@ -181,6 +167,7 @@ $(function () {
 function showLookingPanel () {
 	showPanel('panel-find', 'What are you looking for?');
 	$('#sideinfo').addClass('start').removeClass('companies');
+  $('#back-button').hide().text('Choose Again');
 }
 
 function restartPanel () {
@@ -212,7 +199,7 @@ function showCompanyPanel (modeperson, modecompany) {
 	$('#panel-find').toggleClass('mode-room', modecompany);
 	$('#listings').hide(); $('#companies').show();
 	$('#sideinfo').addClass('start').removeClass('companies');
-  $('#back-button').show();
+  $('#back-button').hide();
 }
 
 
@@ -232,7 +219,7 @@ function showPeopleOrMeetingsPanel (company) {
 	}
 	var doShowPeople = $('#panel-find').hasClass('mode-person');
 
-	$('h2').text('-').html('&nbsp; ');
+	$('h2').text('-').html(' ');
 	$('#listings').show(); $('#companies').hide();
 
 	$('#items').html('');
@@ -243,6 +230,7 @@ function showPeopleOrMeetingsPanel (company) {
   if (company) {
     $('.sideinfo-block-company img').attr('src', company.image);
   }
+  $('#back-button').show();
 
 	$('#alphabet').toggle(doShowPeople);
 	if (doShowPeople) {
@@ -256,7 +244,7 @@ function showPeopleOrMeetingsPanel (company) {
 				$('<h5>').text(lastletter).appendTo('#items');
 			}
 			$('<p></p>').text(person.name).appendTo('#items').on('mousedown', function () {
-				showPersonPanel(person);
+				showPersonPanel(company, person);
 			})
 		})
 		$('#search').focus();
@@ -267,7 +255,7 @@ function showPeopleOrMeetingsPanel (company) {
 	} else {
 		mtgs.forEach(function (mtg) {
 			$('<p></p>').text(mtg).appendTo('#items').on('mousedown', function () {
-				showRoomPanel(mtg);
+				showRoomPanel(company, mtg);
 			})
 		});
 
@@ -316,7 +304,7 @@ function textFilter() {
  */
 
 var currentPerson = null;
-function showPersonPanel (person) {
+function showPersonPanel (company, person) {
   currentPerson = person;
 	showPanel('panel-person', '');
 	$('#panel-person').removeClass('room').addClass('human');
@@ -329,6 +317,11 @@ function showPersonPanel (person) {
 	$('#person-img').css({width: 226 + 'px', height: 300 + 'px'});
 	$('#person-img').attr("src",person.image );
   $('#elevator-pullout span').text(person.floor);
+
+  $('#back-button')[0].onmousedown = function () {
+    showPanel('panel-find', '');
+    showPeopleOrMeetingsPanel(company);
+  };
 }
 
 $(function () {
@@ -342,11 +335,15 @@ $(function () {
  * Individiual room
  */
 
-function showRoomPanel (name) {
+function showRoomPanel (company, name) {
 	showPanel('panel-person', '');
 	$('#panel-person').addClass('room').removeClass('human');
 	$('#person-name').text(name);
 	$('#person-info').text('Currently Occupied');
+
+  $('#back-button')[0].onmousedown = function () {
+    showPeopleOrMeetingsPanel(company);
+  };
 }
 
 
@@ -359,7 +356,7 @@ function timeoutUsage () {
 	setTimeout(function () {
 		// Only timeout if the elevator called panel is visible.
 		if ($('#panel-called').is(':visible')) {
-			resetPanel();
+			restartPanel();
 		}
 	}, 1000 * INTERFACE_TIMEOUT);
 }
@@ -376,6 +373,11 @@ function elevatorCalledPanel (floor, text) {
 	});
 	showPanel('panel-called', '');
 	$('#countdown').text('30 seconds');
+
+  $('#back-button')[0].onmousedown = function () {
+    restartPanel();
+  };
+  $('#back-button').text('I\'m Finished')
 
 	// Interface timeout.
 	timeoutUsage();
