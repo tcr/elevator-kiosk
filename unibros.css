@@ -112,3 +112,4 @@ hr { clear: left; border: none; border-top: 1px solid #565656; opacity: 0.6; }
 .backbtn { height: 40px; width: 150px; background-size: 150px 40px; background-image: url(images/back-button-bg.png);
 background-position: center center; margin: 20px 0; display: block; text-align: center; background-repeat: no-repeat;
 line-height: 40px; padding-left: 6px; color: #999; cursor: pointer; }
+#back-button { float: left; }
