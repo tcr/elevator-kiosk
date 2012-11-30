@@ -114,7 +114,7 @@ var people = names = ["Aaron Ruppe", "Abe Welliver", "Abram Rondeau", "Addie Mar
 		};
 	});
 
-var mtgs = ['Meeting Room 100', 'Meeting Room 101', 'Meeting Room 102'];
+var mtgs = ['Meeting Room 100', 'Meeting Room 101', 'Meeting Room 102', 'Caberteria', 'Gymboree'];
 
 
 /**
