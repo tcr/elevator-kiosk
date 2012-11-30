@@ -12,21 +12,20 @@ if (!window.WebKitAnimationEvent) {
  */
 
 var companies = [
-	{name: 'Apple', image: 'images/companies/applelogo.png'},
-	{name: 'Adobe', image: 'images/companies/applelogo.png'},
-	{name: 'AMD', image: 'images/companies/applelogo.png'},
-	{name: 'Disney Interactive', image: 'images/companies/applelogo.png'},
-	{name: 'Dropbox', image: 'images/companies/applelogo.png'},
-	{name: 'IDEO', image: 'images/companies/applelogo.png'},
-	{name: 'Instagram', image: 'images/companies/applelogo.png'},
-	{name: 'JC Penny', image: 'images/companies/applelogo.png'},
-	{name: 'Jitter', image: 'images/companies/applelogo.png'},
-	{name: 'Kindle Books', image: 'images/companies/applelogo.png'},
-	{name: 'Luminair', image: 'images/companies/applelogo.png'},
-	{name: 'Mass Challenge', image: 'images/companies/applelogo.png'},
-	{name: 'Quora', image: 'images/companies/applelogo.png'},
-	{name: 'Twitter Labs', image: 'images/companies/applelogo.png'},
-	{name: 'Xerox', image: 'images/companies/applelogo.png'}
+	{name: 'Apple', image: 'images/companies/apple.png'},
+	{name: 'Adobe', image: 'images/companies/adobe.png'},
+	{name: 'AMD', image: 'images/companies/amd.png'},
+	{name: 'Disney Interactive', image: 'images/companies/disney.png'},
+	{name: 'Dropbox', image: 'images/companies/dropbox.png'},
+	{name: 'IDEO', image: 'images/companies/ideo.png'},
+	{name: 'Instagram', image: 'images/companies/instagram.png'},
+	{name: 'Jitter', image: 'images/companies/jitter.png'},
+	{name: 'Kindle Books', image: 'images/companies/kindle.png'},
+	{name: 'Luminair', image: 'images/companies/luminair.png'},
+	{name: 'Mass Challenge', image: 'images/companies/masschallenge.png'},
+	{name: 'Quora', image: 'images/companies/quora.png'},
+	{name: 'Twitter Labs', image: 'images/companies/twitter.png'},
+	{name: 'Xerox', image: 'images/companies/xerox.png'}
 ].map(function (company) {
 	company.domain = company.name.replace(/\s+/, '').toLowerCase() + '.com'
 	return company;
@@ -229,6 +228,7 @@ function showPeopleOrMeetingsPanel (company) {
 	$('.sideinfo-block-all').toggle(!company);
   if (company) {
     $('.sideinfo-block-company img').attr('src', company.image);
+    $('.sideinfo-block-company .companyname').text(company.name);
   }
   $('#back-button').show();
 
