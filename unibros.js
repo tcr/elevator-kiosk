@@ -153,10 +153,7 @@ function generateFloorButtons () {
 	$('<tr><td><span>Garage A</span><b></b></td></tr>').appendTo('#floorbuttons table');
 	$('<tr><td><span>Garage B</span><b></b></td></tr>').appendTo('#floorbuttons table');
 	$('#floorbuttons td').on('mousedown', function () {
-		if (!$(this).hasClass('active')) {
-			$(this).addClass('active');
-			$('b', this).text('0:30');
-		}
+		activateFloor($(this, 'span').text())
 	})
 
 }
@@ -185,6 +182,7 @@ function showLookingPanel () {
 }
 
 function restartPanel () {
+  $('#nav').show();
 	showLookingPanel();
 	$('#panel-find').removeClass('mode-person').removeClass('mode-room');
 }
@@ -299,12 +297,13 @@ function generateAlphabetFilter() {
 				return resetAlphabetFilter();
 			}
 			resetAlphabetFilter();
-			$('#items h5').hide();
+			$('#items h5').each(function (i, h5) {
+        $(h5).toggle($(h5).text().toLowerCase() == letter.toLowerCase())
+      });
 			$('#items p').each(function (i, p) {
 				$(p).toggle($(p).text().toLowerCase().charAt(0) == letter.toLowerCase())
 			});
 			$(this).addClass('selectedfilter');
-			console.log(this, this.className);
 		})
 	});	
 }
@@ -379,27 +378,42 @@ function showRoomPanel (company, name) {
  */
 
 function timeoutUsage () {
-	var INTERFACE_TIMEOUT = 10;
+	var INTERFACE_TIMEOUT = 10, i = 10;
 	setTimeout(function () {
 		// Only timeout if the elevator called panel is visible.
+    clearInterval(tagInterval);
 		if ($('#panel-called').is(':visible')) {
 			restartPanel();
 		}
 	}, 1000 * INTERFACE_TIMEOUT);
+  var tagInterval = setInterval(function () {
+    $('#countdownsubtext').text('If you do nothing, this screen will be dismissed in ' + i-- + ' seconds.');
+  }, 1000);
+  $('#countdownsubtext').text('If you do nothing, this screen will be dismissed in ' + i-- + ' seconds.');
+}
+
+function activateFloor (floor) {
+  var flag = ['a', 'b', 'c', 'd'].sort(function () { return Math.random() < 0.5 ? -1 : 1; }).pop();
+  $('#floorbuttons td').each(function (i, td) {
+    if ($('span', td).text() == floor) {
+      $(td).addClass('active').removeClass('flag-a', 'flag-b', 'flag-c', 'flag-d').addClass('flag-' + flag);
+      if ($('b', td).text().indexOf('0:') == -1) {
+        $('b', td).text('0:30');
+      }
+    }
+  });
+  return flag;
 }
 
 function elevatorCalledPanel (floor, text) {
-	$('#elevatorcalledtext').text((text || '') + ' is on floor ' + floor + '. Your elevator to floor ' + floor + ' has been called.');
-	$('#floorbuttons td').each(function (i, td) {
-		if ($('span', td).text() == floor) {
-			$(td).addClass('active');
-			if ($('b', td).text().indexOf('0:') == -1) {
-				$('b', td).text('0:30');
-			}
-		}
-	});
+  var flag = activateFloor(floor);
+
+  $('#nav').hide('fast');
+	$('#elevatorcalledtext').html((text || '') + ' is on floor ' + floor + '.<br><br>Your elevator to floor ' + floor + ' has been called.');
+  $('#elevatorletter img').prop('src', 'images/flag-' + flag + '.png').prop('alt', 'Elevator ' + flag.toUpperCase());
+
 	showPanel('panel-called', '');
-	$('#countdown').text('30 seconds');
+	$('#countdown').text('30 s');
 
   $('#back-button')[0].onmousedown = function () {
     restartPanel();
@@ -437,9 +451,9 @@ $(updateClock);
 function countdown() {
 	var txt = parseInt($('#countdown').text());
 	if (txt) {
-		$('#countdown').text(txt - 1 + ' seconds');
+		$('#countdown').text(txt - 1 + ' s');
 	} else {
-		$('#countdown').text('Your elevator has arrived.');
+		$('#countdown').text('Arrived');
 	}
 
 	$('#floorbuttons td.active b').each(function (i, td) {
@@ -485,7 +499,7 @@ $(function () {
 
 $(function () {
 	$('body').on('dblclick', function (e) {
-		var txt = $(e.target).text();
+		var txt = $(e.target).text() || $(e.target).attr('alt');
 		var url = 'http://tts-api.com/tts.mp3?q=' + encodeURIComponent(txt);
 		new Audio(url).play();
 	})
