@@ -218,7 +218,7 @@ function showCompanyPanel (modeperson, modecompany) {
     $('#showallcomps').text('Show all meeting rooms...');
   } else {
     setHeaderText('Find a person who works in...');
-    $('#showallcomps').text('Show all people...');
+    $('#showallcomps').text('Show all employees in building');
   }
 
   backButtonToggle(true).text('Back')[0].onmousedown = function () {
