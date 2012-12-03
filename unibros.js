@@ -105,13 +105,16 @@ var people = names = ["Aaron Ruppe", "Abe Welliver", "Abram Rondeau", "Addie Mar
 	  // Map each of these to an oject and fake information.
 		return {
 			name: name,
+      lookup: name.split(/\s+/).reverse().join(', '),
 			phone: Math.floor(Math.random()*10000000000),
 			email: name.toLowerCase().replace(/\s+/, '.').replace(/[^a-zA-Z\.]/, '') + '@' + companies[i % companies.length].domain,
 			company: companies[i % companies.length].name,
       floor: Math.floor(Math.random() * 10) + 1,
 			image: (i%2 == 0 ? 'images/males/' + i%80 + '.jpg':'images/females/' + i%50 + '.jpg')
 		};
-	});
+	}).sort(function (a, b) {
+    return a.lookup < b.lookup ? -1 : 1;
+  });
 
 var mtgs = ['Meeting Room 100', 'Meeting Room 101', 'Meeting Room 102', 'Caberteria', 'Gymboree'];
 
@@ -158,6 +161,18 @@ function generateFloorButtons () {
 
 }
 
+/**
+ * Back button
+ */
+
+function backButtonToggle (flag, text) {
+  return $('#back-button').toggleClass('disabled', !flag);
+}
+
+function setHeaderText (txt) {
+  $('h2').text(txt);
+}
+
 
 /**
  * What are you looking for?
@@ -166,7 +181,7 @@ function generateFloorButtons () {
 function showLookingPanel () {
 	showPanel('panel-find', 'What are you looking for?');
 	$('#sideinfo').addClass('start').removeClass('companies');
-  $('#back-button').hide().text('Choose Again');
+  backButtonToggle(false).text('Choose Again');
 }
 
 function restartPanel () {
@@ -179,8 +194,8 @@ function restartPanel () {
  */
 
 function createCompanyList () {
-	$('#companies').append('<p class="showallcomps" style="font-style: italic">Show all...</p>')
-	$('#companies p.showallcomps').on('mousedown', function () {
+	$('#companies').append('<p id="showallcomps" style="font-style: italic">Show all...</p>')
+	$('#companies #showallcomps').on('mousedown', function () {
 		showPeopleOrMeetingsPanel(null);
 		$('#sideinfo').removeClass('start').addClass('companies');
 	});
@@ -193,12 +208,22 @@ function createCompanyList () {
 }
 
 function showCompanyPanel (modeperson, modecompany) {
-	$('h2').text('Choose a company.');
 	$('#panel-find').toggleClass('mode-person', modeperson);
 	$('#panel-find').toggleClass('mode-room', modecompany);
 	$('#listings').hide(); $('#companies').show();
 	$('#sideinfo').addClass('start').removeClass('companies');
-  $('#back-button').hide();
+
+  if (modeperson == false) {
+    setHeaderText('Find a meeting room in...');
+    $('#showallcomps').text('Show all meeting rooms...');
+  } else {
+    setHeaderText('Find a person who works in...');
+    $('#showallcomps').text('Show all people...');
+  }
+
+  backButtonToggle(true).text('Back')[0].onmousedown = function () {
+    restartPanel();
+  };
 }
 
 
@@ -218,7 +243,7 @@ function showPeopleOrMeetingsPanel (company) {
 	}
 	var doShowPeople = $('#panel-find').hasClass('mode-person');
 
-	$('h2').text('-').html(' ');
+	setHeaderText((company ? '' : 'All') + (doShowPeople ? ' People' : ' Meeting rooms') + (company ? (doShowPeople ? ' employed by ' : ' in ') + company.name : '') + '.')
 	$('#listings').show(); $('#companies').hide();
 
 	$('#items').html('');
@@ -230,7 +255,7 @@ function showPeopleOrMeetingsPanel (company) {
     $('.sideinfo-block-company img').attr('src', company.image);
     $('.sideinfo-block-company .companyname').text(company.name);
   }
-  $('#back-button').show();
+  backButtonToggle(true);
 
 	$('#alphabet').toggle(doShowPeople);
 	if (doShowPeople) {
@@ -239,11 +264,11 @@ function showPeopleOrMeetingsPanel (company) {
 		people.filter(function (person) {
 			return !company || person.company == company.name;
 		}).forEach(function (person) {
-			if (person.name.charAt(0) != lastletter) {
-				lastletter = person.name[0];
+			if (person.lookup.charAt(0) != lastletter) {
+				lastletter = person.lookup[0];
 				$('<h5>').text(lastletter).appendTo('#items');
 			}
-			$('<p></p>').text(person.name).appendTo('#items').on('mousedown', function () {
+			$('<p></p>').text(person.lookup).appendTo('#items').on('mousedown', function () {
 				showPersonPanel(company, person);
 			})
 		})
@@ -306,7 +331,8 @@ function textFilter() {
 var currentPerson = null;
 function showPersonPanel (company, person) {
   currentPerson = person;
-	showPanel('panel-person', '');
+	showPanel('panel-person');
+  setHeaderText('Viewing profile.');
 	$('#panel-person').removeClass('room').addClass('human');
 
 	var phoneNumber = '(' + String(person.phone).substr(0, 3) + ') ' + String(person.phone).substr(3, 3) + '-' + String(person.phone).substr(6)
@@ -314,7 +340,7 @@ function showPersonPanel (company, person) {
 	$('#person-info').text('Employee at ' + person.company + '\n' +
 		phoneNumber + '\n' +
 		person.email);
-	$('#person-img').css({width: 226 + 'px', height: 300 + 'px'});
+	$('#person-img').css({width: 250 + 'px', height: 250 + 'px'});
 	$('#person-img').attr("src",person.image );
   $('#elevator-pullout span').text(person.floor);
 
@@ -336,7 +362,8 @@ $(function () {
  */
 
 function showRoomPanel (company, name) {
-	showPanel('panel-person', '');
+	showPanel('panel-person');
+  setHeaderText('Viewing meeting room.');
 	$('#panel-person').addClass('room').removeClass('human');
 	$('#person-name').text(name);
 	$('#person-info').text('Currently Occupied');
