@@ -25,7 +25,10 @@ body { width: 1050px; margin: 0 auto; }
 h1 { margin: 0; font-size: 30px; padding: 10px 0; font-weight: normal; line-height: 1.0;}
 h1 small { color: #8f8f8f; }
 h2 { margin: 12px 0 0;
-	font-size: 20px; letter-spacing: 0.05em; }
+	font-size: 20px; letter-spacing: 0.05em;
+	font-weight: normal;
+	font-style: normal;
+}
 
 h2#headerh2 {
 	padding-top: 5px;
@@ -118,7 +121,6 @@ hr { clear: left; border: none; border-top: 1px solid #565656; opacity: 0.6; }
 #ledtrack1 { width: 30px; float: left; }
 
 #poiheader span { font-size: 20px; display: block; position: absolute; top: -5px; background: #363636; padding-right: 15px; letter-spacing: 0.1em;
-font-weight: bold;
 }
 
 #map {
