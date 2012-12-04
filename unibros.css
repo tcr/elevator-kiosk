@@ -133,4 +133,8 @@ line-height: 40px; color: #999; cursor: pointer; overflow: hidden;
   -webkit-transition-duration: 1s, 0.5s, 0.5s;
    }
 .backbtn.disabled { opacity: 0; width: 0; margin-right: 0; }
-#back-button { float: left; }
+#back-button { float: left; color: #fff;
+font-family: "Helvetica Neue", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", 
+  Helvetica, Arial, "Lucida Grande", sans-serif;
+font-size: 20px;
+text-shadow: 0 2px 0 rgba(255,255,255,.5);}

@@ -216,7 +216,7 @@ function showCompanyPanel (modeperson, modecompany) {
     $('#showallcomps').text('Show all meeting rooms...');
   } else {
     setHeaderText('Find a person who works in...');
-    $('#showallcomps').text('Show all people...');
+    $('#showallcomps').text('Show all employees in building');
   }
 
   backButtonToggle(true).text('Back')[0].onmousedown = function () {
@@ -341,8 +341,8 @@ function showPersonPanel (company, person) {
 		person.email);
 	$('#person-img').css({width: 250 + 'px', height: 250 + 'px'});
 	$('#person-img').attr("src",person.image );
-  $('#elevator-pullout span').text(person.floor);
-
+	$('#elevator-pullout span').text(person.floor);
+	$('#person-floor-num').text("Map of floor " + person.floor);
   $('#back-button')[0].onmousedown = function () {
     showPanel('panel-find', '');
     showPeopleOrMeetingsPanel(company);
