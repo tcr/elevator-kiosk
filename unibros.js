@@ -345,8 +345,8 @@ function showPersonPanel (company, person) {
 		person.email);
 	$('#person-img').css({width: 250 + 'px', height: 250 + 'px'});
 	$('#person-img').attr("src",person.image );
-	//$('#elevator-pullout span').text(person.floor);
 	$('#person-floor-num').text("Map of floor " + person.floor);
+	$('#elevator-pullout span').text(person.floor);
   $('#back-button')[0].onmousedown = function () {
     showPanel('panel-find', '');
     showPeopleOrMeetingsPanel(company);
