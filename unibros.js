@@ -245,7 +245,7 @@ function showPeopleOrMeetingsPanel (company) {
 	var doShowPeople = $('#panel-find').hasClass('mode-person');
 	$('#print-button').hide();
 
-	setHeaderText((company ? '' : 'All') + (doShowPeople ? ' People' : ' Meeting rooms') + (company ? (doShowPeople ? ' employed by ' : ' in ') + company.name : '') + '.')
+	setHeaderText((company ? '' : 'All') + (doShowPeople ? ' People' : ' Meeting rooms') + (company ? (doShowPeople ? ' employed by ' : ' in ') + company.name : '') + '')
 	$('#listings').show(); $('#companies').hide();
 
 	$('#items').html('');

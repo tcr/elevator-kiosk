@@ -1,3 +1,7 @@
+#pois {
+	padding-top: 20px;
+}
+
 html, body { margin: 0; padding: 0;
 	font-size: 18px; font-family: Helvetica Neue, Helvetica, Arial, sans-serif; }
 html, body { height: 100%; position: relative; background: black; color: white; }
@@ -20,7 +24,13 @@ body { width: 1050px; margin: 0 auto; }
 
 h1 { margin: 0; font-size: 30px; padding: 10px 0; font-weight: normal; line-height: 1.0;}
 h1 small { color: #8f8f8f; }
-h2 { margin: 15px 0 0; font-weight: normal; font-size: 20px; letter-spacing: 0.05em; }
+h2 { margin: 12px 0 0;
+	font-size: 20px; letter-spacing: 0.05em; }
+
+h2#headerh2 {
+	padding-top: 5px;
+}
+
 h3 { text-transform: uppercase; color: #666; margin: 15px 15px 0; font-weight: normal; }
 
 .panel { overflow: auto; height: 700px; position: relative; }
@@ -69,14 +79,28 @@ hr { clear: left; border: none; border-top: 1px solid #565656; opacity: 0.6; }
 #button-findameeting { background-image: url(images/find-meetingroom.png); }
 .mode-room #button-findameeting { background-image: url(images/find-meetingroom-selected.png); }
 
-#poi { -webkit-columns: 300px 2; padding: 10px 10px 0 10px;}
+#poi { -webkit-columns: 300px 2; padding: 10px 10px 0 10px;
+	margin-top: 20px;
+}
 #poi p { margin: 0; text-align: center; cursor: pointer; }
 #poi img { }
 
 /* panel companies */
 #companies, #listings { margin-left: 365px; width: 335px; opacity: 0; -webkit-transition: opacity 0.5s; }
-#companies p { border: solid #565656; border-width: 0 0 1px; margin: 0 0 0 0; padding: 15px 10px; cursor: pointer; }
-#companies p:hover { background: #555; }
+#companies p { border: solid #565656; border-width: 0 0 1px; margin: 0 0 0 0; padding: 15px 10px; cursor: pointer;
+	;
+}
+#companies p:hover { background: #555; color: white
+}
+
+#sideinfo-block-companies div.sideinfo-block-company p.companyname {
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+#sideinfo-block-companies div.sideinfo-block-company p {
+	
+}
 
 #find-meeting { width: 90%; margin: 0 auto; display: block; text-align: center; padding: 15px; font-size: 24px;  }
 #search { font-size:; 24px; padding: 5px 0; width: 500px; margin-left: 20px; }
@@ -93,33 +117,52 @@ hr { clear: left; border: none; border-top: 1px solid #565656; opacity: 0.6; }
 
 #ledtrack1 { width: 30px; float: left; }
 
-#poiheader span { font-size: 20px; display: block; position: absolute; top: -5px; background: #363636; padding-right: 15px; letter-spacing: 0.1em;}
+#poiheader span { font-size: 20px; display: block; position: absolute; top: -5px; background: #363636; padding-right: 15px; letter-spacing: 0.1em;
+font-weight: bold;
+}
+
+#map {
+	margin-left: 15px;
+}
+
+#panel-img img {
+	width: 100%;
+}
+
+
+
 #poiheader { border-bottom: 1px solid #565656; padding-top: 10px; position: relative; margin: 0 0; }
 .mode-person #poiheader, .mode-room #poiheader { display: none; }
 
 /* panel person*/
 #person-img { float: left; margin: 15px 25px 40px 15px; height: 300px; }
-#person-name { font-style: normal; font-size: 30px; margin: 1em 0 .5em; }
+#person-name { font-style: normal; font-size: 30px;
+margin-bottom: .5em;
+margin-left: 0;
+margin-right: 0;
+}
 #person-info { font: inherit; font-style: normal; color: #aaa; }
 #person-info-box { margin-left: 240px; }
 
 .panel.room #person-img { display: none; }
 
-#elevator-pullout { 
-font-size: 24px; display: inline-block;
-  text-align: center; cursor: pointer; font-style: normal;
-  font-weight: normal;
-color: #fff; /* text color */
-font-family: "Helvetica Neue", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", 
-  Helvetica, Arial, "Lucida Grande", sans-serif;
-text-shadow: 0 -1px 0 rgba(0,0,0,1.0); /* drop shadow */
+#elevator-pullout {
+	display: inline-block;
+  text-align: center; cursor: pointer;
+	color: #fff; /* text color */
+
+text-shadow: 0 -2px 0 rgba(0,0,0,1.0); /* drop shadow */
 background: url(images/callElevatorButton.png);
 box-sizing: border-box;
-width: 370px; height: 100px;
+height: 100px;
 background-size: 380px 80px;
 background-size:contain;
 background-repeat: no-repeat;
-  }
+font: normal normal 24px "Helvetica Neue", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", 
+Helvetica, Arial, "Lucida Grande", sans-serif;
+margin-top: 30px;
+width: 85%;
+}
 #elevator-pullout span { display: inline-block; text-align: center; height: 40px; width: 40px; font-size: 30pt;}
 
 /* elevator called. */
@@ -131,18 +174,20 @@ background-repeat: no-repeat;
 
 #panel-img { background: #ccc; border: 2px solid #111;}
 
-.backbtn { height: 40px; width: 150px; background-size: 150px 40px; background-image: url(images/back-button-bg.png);
+.backbtn { height: 45px; width: 150px; background-size: 150px 40px; background-image: url(images/back-button-bg.png);
 background-position: center center; margin: 10px 20px 10px 0; display: block; text-align: center; background-repeat: no-repeat;
 line-height: 40px; color: #999; cursor: pointer; overflow: hidden; 
 -webkit-transition-property: opacity, width, margin-right;
   -webkit-transition-duration: 1s, 0.5s, 0.5s;
-   }
+	padding-top: 15px;
+	top: -10px;
+}
 .backbtn.disabled { opacity: 0; width: 0; margin-right: 0; }
 #back-button { float: left; color: #fff;
-font-family: "Helvetica Neue", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", 
-  Helvetica, Arial, "Lucida Grande", sans-serif;
-font-size: 20px;
-text-shadow: 0 2px 0 rgba(255,255,255,.5);
+	text-shadow: 0 -2px 0 rgba(0, 0, 0, 0.5);
+font: bold 20px "Helvetica Neue", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", 
+Helvetica, Arial, "Lucida Grande", sans-serif;
+position: relative;
 }
 
 #print-button { float: right; color: #fff;
