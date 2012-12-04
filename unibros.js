@@ -186,6 +186,7 @@ function restartPanel () {
 	showLookingPanel();
 	$('#panel-find').removeClass('mode-person').removeClass('mode-room');
 	$('#print-button').hide();
+  setHeaderText('What are you looking for?');
 }
 
 /**
@@ -399,7 +400,7 @@ function activateFloor (floor) {
   var flag = ['a', 'b', 'c', 'd'].sort(function () { return Math.random() < 0.5 ? -1 : 1; }).pop();
   $('#floorbuttons td').each(function (i, td) {
     if ($('span', td).text() == floor) {
-      $(td).addClass('active').removeClass('flag-a', 'flag-b', 'flag-c', 'flag-d').addClass('flag-' + flag);
+      $(td).addClass('active').removeClass('flag-a').removeClass('flag-b').removeClass('flag-c').removeClass('flag-d').addClass('flag-' + flag);
       if ($('b', td).text().indexOf('0:') == -1) {
         $('b', td).text('0:30');
       }
