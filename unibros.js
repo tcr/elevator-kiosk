@@ -141,7 +141,7 @@ function showPanel (id, header) {
 	$('.panel').hide();
 	$('#' + id).show();
 	
-	$('h2').text(header);
+	//$('h2').text(header);
 }
 
 function generateFloorButtons () {
@@ -167,7 +167,7 @@ function backButtonToggle (flag, text) {
 }
 
 function setHeaderText (txt) {
-  $('h2').text(txt);
+  $('#headerh2').text(txt);
 }
 
 
@@ -333,7 +333,7 @@ var currentPerson = null;
 function showPersonPanel (company, person) {
   currentPerson = person;
 	showPanel('panel-person');
-  setHeaderText('Viewing profile.');
+  setHeaderText('');
 	$('#panel-person').removeClass('room').addClass('human');
 	$('#print-button').show();
 	var phoneNumber = '(' + String(person.phone).substr(0, 3) + ') ' + String(person.phone).substr(3, 3) + '-' + String(person.phone).substr(6)
@@ -343,7 +343,7 @@ function showPersonPanel (company, person) {
 		person.email);
 	$('#person-img').css({width: 250 + 'px', height: 250 + 'px'});
 	$('#person-img').attr("src",person.image );
-	$('#elevator-pullout span').text(person.floor);
+	//$('#elevator-pullout span').text(person.floor);
 	$('#person-floor-num').text("Map of floor " + person.floor);
   $('#back-button')[0].onmousedown = function () {
     showPanel('panel-find', '');
@@ -477,7 +477,7 @@ setInterval(countdown, 1000);
  */
 
 $(function () {
-	// Generation.
+	// Generation.f
 	generateFloorButtons();
 	createCompanyList();
 	generateAlphabetFilter();

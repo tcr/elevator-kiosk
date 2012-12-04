@@ -8,7 +8,7 @@ body { width: 1050px; margin: 0 auto; }
 #floorbuttons td { text-align: center; color: black; font-size: 20px; height: 40px; background: url(images/floor-button.png); padding-top: 5px; cursor: pointer; position: relative; }
 #floorbuttons td.active { background: url(images/floor-button-selected.png); color: #ddd; } 
 #floorbuttons td b { display: none; }
-#floorbuttons td.active span { padding-right: 20px;  }
+#floorbuttons td.active span { padding-right: 90px;  }
 #floorbuttons td.active b { display: block; position: absolute; right: 10px; top: 15px; font-weight: normal; font-size: 16px; }
 #floorbuttons td b::before { color: white; margin-right: 10px; padding: .2em .47em; font-size: 12px; font-weight: bold; vertical-align: middle; }
 #floorbuttons td.flag-a b::before { background: #0e0;  content: "A"; }
@@ -105,17 +105,22 @@ hr { clear: left; border: none; border-top: 1px solid #565656; opacity: 0.6; }
 
 .panel.room #person-img { display: none; }
 
-#elevator-pullout { padding: 15px; font-size: 24px; display: inline-block;
-  border-radius: 10px; border: 2px solid #555; padding: 10px 40px; text-align: center; cursor: pointer; font-style: normal;
+#elevator-pullout { 
+font-size: 24px; display: inline-block;
+  text-align: center; cursor: pointer; font-style: normal;
   font-weight: normal;
 color: #fff; /* text color */
-font-family: "Helvetica Neue";
-text-shadow: 0 2px 0 rgba(255,255,255,.5); /* drop shadow */
+font-family: "Helvetica Neue", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", 
+  Helvetica, Arial, "Lucida Grande", sans-serif;
+text-shadow: 0 -1px 0 rgba(0,0,0,1.0); /* drop shadow */
 background: url(images/callElevatorButton.png);
 box-sizing: border-box;
-width: 380px; height: 80px;
-background-size: 380px 80px;  }
-#elevator-pullout span { display: inline-block; text-align: center; height: 40px; width: 40px; }
+width: 370px; height: 100px;
+background-size: 380px 80px;
+background-size:contain;
+background-repeat: no-repeat;
+  }
+#elevator-pullout span { display: inline-block; text-align: center; height: 40px; width: 40px; font-size: 30pt;}
 
 /* elevator called. */
 #panel-called h1 { text-align: center; margin: 20px 0; }
@@ -137,4 +142,13 @@ line-height: 40px; color: #999; cursor: pointer; overflow: hidden;
 font-family: "Helvetica Neue", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", 
   Helvetica, Arial, "Lucida Grande", sans-serif;
 font-size: 20px;
-text-shadow: 0 2px 0 rgba(255,255,255,.5);}
+text-shadow: 0 2px 0 rgba(255,255,255,.5);
+}
+
+#print-button { float: right; color: #fff;
+font-family: "Helvetica Neue", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", 
+  Helvetica, Arial, "Lucida Grande", sans-serif;
+font-size: 20px;
+	background-image:url(images/print-button.png);
+
+}
