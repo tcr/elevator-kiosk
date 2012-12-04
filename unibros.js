@@ -212,6 +212,7 @@ function showCompanyPanel (modeperson, modecompany) {
 	$('#panel-find').toggleClass('mode-room', modecompany);
 	$('#listings').hide(); $('#companies').show();
 	$('#sideinfo').addClass('start').removeClass('companies');
+	$('#print-button').hide();
 
   if (modeperson == false) {
     setHeaderText('Find a meeting room in...');
@@ -242,6 +243,7 @@ function showPeopleOrMeetingsPanel (company) {
 		showAll = true;
 	}
 	var doShowPeople = $('#panel-find').hasClass('mode-person');
+	$('#print-button').hide();
 
 	setHeaderText((company ? '' : 'All') + (doShowPeople ? ' People' : ' Meeting rooms') + (company ? (doShowPeople ? ' employed by ' : ' in ') + company.name : '') + '.')
 	$('#listings').show(); $('#companies').hide();
@@ -334,7 +336,7 @@ function showPersonPanel (company, person) {
 	showPanel('panel-person');
   setHeaderText('Viewing profile.');
 	$('#panel-person').removeClass('room').addClass('human');
-
+	$('#print-button').show();
 	var phoneNumber = '(' + String(person.phone).substr(0, 3) + ') ' + String(person.phone).substr(3, 3) + '-' + String(person.phone).substr(6)
 	$('#person-name').text(person.name);
 	$('#person-info').text('Employee at ' + person.company + '\n' +

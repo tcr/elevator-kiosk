@@ -102,6 +102,15 @@ hr { clear: left; border: none; border-top: 1px solid #565656; opacity: 0.6; }
 
 #elevator-pullout { padding: 15px; font-size: 24px; display: inline-block; border-radius: 10px; border: 2px solid #555; padding: 10px 40px; text-align: center; cursor: pointer; font-style: normal; }
 #elevator-pullout span { display: inline-block; text-align: center; height: 40px; width: 40px; border-radius: 20px; background: #555; padding-top: 6px; box-sizing: border-box;}
+#print-button{
+	float:right;
+	height: 40px; width: 40px; background-size: 40px 40px; background-image: url(images/back-button-bg.png);
+	background-position: center center; margin: 10px 20px 10px 0; display: block; text-align: center; background-repeat: no-repeat;
+	line-height: 40px; color: #999; cursor: pointer; overflow: hidden; 
+
+	background-image: url(images/print-button.png);
+
+}
 
 /* elevator called. */
 #panel-called h1 { text-align: center; margin: 20px 0; }
