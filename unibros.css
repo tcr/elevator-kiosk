@@ -149,6 +149,10 @@ text-shadow: 0 2px 0 rgba(255,255,255,.5);
 font-family: "Helvetica Neue", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", 
   Helvetica, Arial, "Lucida Grande", sans-serif;
 font-size: 20px;
-	background-image:url(images/print-button.png);
-
+background-image:url(images/print-button.png);
+width:75px;
+height:40px;
+margin-top:10px;
+background-size: cover;
+background-repeat: no-repeat;
 }

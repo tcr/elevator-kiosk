@@ -185,6 +185,7 @@ function restartPanel () {
   $('#nav').show();
 	showLookingPanel();
 	$('#panel-find').removeClass('mode-person').removeClass('mode-room');
+	$('#print-button').hide();
 }
 
 /**
