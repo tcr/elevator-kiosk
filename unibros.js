@@ -186,7 +186,7 @@ function restartPanel () {
 	showLookingPanel();
 	$('#panel-find').removeClass('mode-person').removeClass('mode-room');
 	$('#print-button').hide();
-  setHeaderText('What are you looking for?');
+	setHeaderText('What are you looking for?');
 }
 
 /**
@@ -369,7 +369,7 @@ function showRoomPanel (company, name) {
   setHeaderText('Viewing meeting room.');
 	$('#panel-person').addClass('room').removeClass('human');
 	$('#person-name').text(name);
-	$('#person-info').text('Currently Occupied');
+	$('#person-info').text('"Interview with Val Greene starting in 10 minutes"');
 
   $('#back-button')[0].onmousedown = function () {
     showPeopleOrMeetingsPanel(company);
@@ -387,7 +387,7 @@ function timeoutUsage () {
 		// Only timeout if the elevator called panel is visible.
     clearInterval(tagInterval);
 		if ($('#panel-called').is(':visible')) {
-			restartPanel();
+			showWelcomeScreen();
 		}
 	}, 1000 * INTERFACE_TIMEOUT);
   var tagInterval = setInterval(function () {
@@ -491,11 +491,19 @@ $(function () {
 
 	// Header is a restart button.
 	$('#header').on('mousedown', restartPanel);
-	
-	// Show first looking panel.
-	restartPanel();
+	showWelcomeScreen();
 })
 
+function showWelcomeScreen(){
+	$('#nav').hide();
+	// Show first looking panel.
+	//restartPanel();
+	showPanel('panel-welcome');	
+	$('#panel-welcome').click(function(){
+		$('#nav').show();
+		restartPanel();
+	});
+}
 
 /**
  * Text-to-Speech API
