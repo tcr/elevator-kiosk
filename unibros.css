@@ -203,3 +203,7 @@ margin-top:10px;
 background-size: cover;
 background-repeat: no-repeat;
 }
+
+#panel-welcome #welcomeHolder{
+font-family: "Helvetica Neue", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue",Helvetica, Arial, "Lucida Grande", sans-serif;text-shadow: 0 5px 0 rgba(0, 0, 0, 0.7);
+}
